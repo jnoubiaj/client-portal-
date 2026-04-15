@@ -1,0 +1,2709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Onboarding — CapitalQuest Client Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:       #0A1628;
+      --navy-mid:   #112240;
+      --navy-light: #1a3a6b;
+      --blue:       #22A7F0;
+      --blue-dark:  #1a8fd4;
+      --blue-light: #e8f5fd;
+      --white:      #ffffff;
+      --bg:         #F4F7FA;
+      --gray-50:    #F8FAFC;
+      --gray-100:   #EDF1F7;
+      --gray-200:   #D4DCE8;
+      --gray-300:   #B8C4D8;
+      --gray-400:   #8A97B0;
+      --gray-500:   #627090;
+      --gray-600:   #4A5568;
+      --gray-800:   #1A2340;
+      --success:    #10b981;
+      --success-bg: #ecfdf5;
+      --danger:     #ef4444;
+      --font-head:  'Plus Jakarta Sans', sans-serif;
+      --font-body:  'Inter', sans-serif;
+    }
+
+    html, body {
+      min-height: 100%;
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--gray-800);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── TOP PROGRESS BAR ─────────────────────────────── */
+    .onboard-header {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-100);
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    /* Logo hidden — steps centered */
+    .onboard-logo { display: none; }
+
+    .step-indicators {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .step-ind {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray-400);
+      transition: color 0.2s;
+    }
+    .step-ind.active { color: var(--navy); }
+    .step-ind.done   { color: var(--success); }
+    .step-dot {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-head);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-400);
+      background: var(--white);
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .step-ind.active .step-dot {
+      border-color: var(--blue);
+      background: var(--blue);
+      color: var(--white);
+      box-shadow: 0 0 0 4px rgba(34,167,240,0.15);
+    }
+    .step-ind.done .step-dot {
+      border-color: var(--success);
+      background: var(--success);
+      color: var(--white);
+    }
+    .step-connector {
+      width: 52px;
+      height: 2px;
+      background: var(--gray-200);
+      margin: 0 6px;
+      border-radius: 2px;
+      transition: background 0.3s;
+    }
+    .step-connector.done { background: var(--success); }
+
+    /* ── SCREEN SYSTEM ────────────────────────────────── */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ── CARD WRAPPER ─────────────────────────────────── */
+    .page-wrap {
+      max-width: 760px;
+      margin: 48px auto;
+      padding: 0 24px 80px;
+    }
+    .card {
+      background: var(--white);
+      border-radius: 20px;
+      border: 1px solid var(--gray-100);
+      box-shadow: 0 4px 24px rgba(10,22,40,0.06);
+      overflow: hidden;
+    }
+    .card-top {
+      padding: 40px 48px 32px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--blue-light);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .card-top h1 {
+      font-family: var(--font-head);
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    .card-top p {
+      font-size: 15px;
+      color: var(--gray-500);
+      line-height: 1.65;
+    }
+    .card-body { padding: 40px 48px; }
+
+    /* ── WELCOME SCREEN ───────────────────────────────── */
+    .welcome-card-top {
+      text-align: center;
+    }
+    .welcome-card-top .card-badge {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .welcome-logo-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    .welcome-logo-wrap img {
+      height: 80px;
+    }
+    .expect-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 28px 0 36px;
+    }
+    .expect-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-100);
+      border-radius: 14px;
+      padding: 18px 20px;
+    }
+    .expect-icon {
+      width: 42px; height: 42px;
+      background: var(--blue-light);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--blue);
+      flex-shrink: 0;
+    }
+    .expect-text { flex: 1; }
+    .expect-item h4 {
+      font-family: var(--font-head);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 3px;
+    }
+    .expect-item p {
+      font-size: 13px;
+      color: var(--gray-500);
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    /* ── CONTRACT SCREEN ──────────────────────────────── */
+    .contract-scroll {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 32px 36px;
+      height: 420px;
+      overflow-y: auto;
+      font-size: 13.5px;
+      line-height: 1.85;
+      color: var(--gray-700, #374151);
+      margin-bottom: 20px;
+      scroll-behavior: smooth;
+    }
+    .contract-scroll::-webkit-scrollbar { width: 6px; }
+    .contract-scroll::-webkit-scrollbar-track { background: var(--gray-100); border-radius: 999px; }
+    .contract-scroll::-webkit-scrollbar-thumb { background: var(--gray-300); border-radius: 999px; }
+    .contract-scroll h2 {
+      font-family: var(--font-head);
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--navy);
+      text-align: center;
+      margin-bottom: 4px;
+    }
+    .contract-scroll .contract-subtitle {
+      text-align: center;
+      font-size: 13px;
+      color: var(--gray-400);
+      margin-bottom: 28px;
+    }
+    .contract-scroll h3 {
+      font-family: var(--font-head);
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin: 24px 0 8px;
+      padding-top: 20px;
+      border-top: 1px solid var(--gray-200);
+    }
+    .contract-scroll h3:first-of-type { border-top: none; padding-top: 0; }
+    .contract-scroll p { margin-bottom: 12px; }
+    .contract-scroll ol { padding-left: 20px; margin-bottom: 12px; }
+    .contract-scroll ol li { margin-bottom: 6px; }
+    .contract-scroll .highlight {
+      background: rgba(34,167,240,0.08);
+      border-left: 3px solid var(--blue);
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 16px 0;
+      font-weight: 600;
+      color: var(--navy);
+    }
+    .scroll-hint {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--gray-400);
+      margin-bottom: 16px;
+    }
+    .scroll-hint.hidden { display: none; }
+    .contract-read-check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      background: var(--success-bg);
+      border-radius: 10px;
+      border: 1px solid rgba(16,185,129,0.2);
+      margin-bottom: 24px;
+      font-size: 13px;
+      color: var(--gray-600);
+    }
+    .contract-read-check input { accent-color: var(--success); }
+
+    .sig-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    .sig-box {
+      border: 1.5px solid var(--gray-200);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .sig-label {
+      background: var(--gray-50);
+      padding: 10px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .sig-canvas-wrap {
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: text;
+      position: relative;
+    }
+    .sig-typed {
+      font-family: 'Segoe Script', 'Brush Script MT', cursive;
+      font-size: 28px;
+      color: var(--navy);
+      padding: 8px 16px;
+    }
+    .sig-input-field {
+      width: 100%;
+      border: none;
+      outline: none;
+      padding: 16px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--navy);
+      background: transparent;
+    }
+    .sig-input-field::placeholder { color: var(--gray-300); }
+
+    /* ── FORM SCREENS ─────────────────────────────────── */
+    .form-section-title {
+      font-family: var(--font-head);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin: 28px 0 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .form-section-title:first-child { margin-top: 0; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    .form-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .form-grid.full { grid-template-columns: 1fr; }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group.span-2 { grid-column: span 2; }
+    .form-group label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      height: 44px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 0 14px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--navy);
+      background: var(--gray-50);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none;
+    }
+    .form-group textarea {
+      height: auto;
+      padding: 12px 14px;
+      resize: vertical;
+    }
+    .form-group select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238A97B0' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(34,167,240,0.1);
+      background: var(--white);
+    }
+    .field-hint {
+      font-size: 11px;
+      color: var(--gray-400);
+      margin-top: 2px;
+    }
+
+    .autosave-notice {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--success);
+      margin-bottom: 24px;
+    }
+
+    /* ── CONFIRMATION SCREEN ──────────────────────────── */
+    .confirm-wrap {
+      text-align: center;
+      padding: 48px 24px;
+    }
+    .confirm-icon {
+      width: 80px; height: 80px;
+      background: var(--success-bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 28px;
+    }
+    .confirm-wrap h2 {
+      font-family: var(--font-head);
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+    .confirm-wrap p {
+      font-size: 15px;
+      color: var(--gray-500);
+      line-height: 1.7;
+      max-width: 480px;
+      margin: 0 auto 32px;
+    }
+    .confirm-steps {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    .confirm-step {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-100);
+      border-radius: 12px;
+      padding: 16px 20px;
+      text-align: center;
+      flex: 1;
+      max-width: 160px;
+    }
+    .confirm-step .num {
+      font-family: var(--font-head);
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--blue);
+      margin-bottom: 4px;
+    }
+    .confirm-step .lbl {
+      font-size: 12px;
+      color: var(--gray-400);
+      line-height: 1.4;
+    }
+
+    /* ── BUTTONS ──────────────────────────────────────── */
+    .btn-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 36px;
+    }
+    .btn-back {
+      height: 48px;
+      padding: 0 24px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 12px;
+      background: var(--white);
+      font-family: var(--font-head);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gray-500);
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .btn-back:hover { border-color: var(--gray-300); color: var(--navy); }
+    .btn-next {
+      height: 48px;
+      padding: 0 32px;
+      border: none;
+      border-radius: 12px;
+      background: var(--blue);
+      font-family: var(--font-head);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--white);
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(34,167,240,0.3);
+      transition: background 0.15s, transform 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-next:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .btn-next:active { transform: translateY(0); }
+    .btn-next.navy {
+      background: var(--navy);
+      box-shadow: 0 4px 16px rgba(10,22,40,0.25);
+    }
+    .btn-next.navy:hover { background: var(--navy-light); }
+    .btn-next.success {
+      background: var(--success);
+      box-shadow: 0 4px 16px rgba(16,185,129,0.3);
+    }
+    .btn-next-hint {
+      font-size: 11px;
+      opacity: 0.75;
+      font-weight: 400;
+    }
+    .btn-spacer { flex: 1; }
+
+    /* ── BANK PICKER ──────────────────────────────────── */
+    .bank-state-hint {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--blue-light);
+      border: 1px solid rgba(34,167,240,0.2);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--blue);
+      font-weight: 500;
+    }
+    .bank-section {
+      border: 1px solid var(--gray-100);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .bank-section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .bank-section-header.major  { background: #f0f7ff; }
+    .bank-section-header.cu     { background: #f0fdf4; }
+    .bank-section-header.other  { background: var(--gray-50); }
+    .bank-section-icon {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .bank-section-header.major  .bank-section-icon { background: var(--blue-light); color: var(--blue); }
+    .bank-section-header.cu     .bank-section-icon { background: #d1fae5; color: #059669; }
+    .bank-section-header.other  .bank-section-icon { background: var(--gray-100); color: var(--gray-500); }
+    .bank-section-title {
+      font-family: var(--font-head);
+      font-size: 13px;
+      font-weight: 700;
+      flex: 1;
+    }
+    .bank-section-header.major  .bank-section-title { color: var(--blue); }
+    .bank-section-header.cu     .bank-section-title { color: #059669; }
+    .bank-section-header.other  .bank-section-title { color: var(--gray-500); }
+    .bank-section-count {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .bank-section-header.major  .bank-section-count { background: var(--blue-light); color: var(--blue); }
+    .bank-section-header.cu     .bank-section-count { background: #d1fae5; color: #059669; }
+    .bank-section-header.other  .bank-section-count { background: var(--gray-100); color: var(--gray-500); }
+    .bank-section-chips {
+      padding: 14px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .bank-section-chips.collapsed {
+      display: none !important;
+    }
+    .bank-section-toggle {
+      margin-left: 6px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .bank-section-toggle:hover { background: #1a8fc5; }
+    .bank-group-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gray-400);
+      margin-top: 4px;
+      margin-bottom: 2px;
+      width: 100%;
+    }
+    .bank-chip.cu { border-color: #d1fae5; color: #059669; background: #f0fdf4; }
+    .bank-chip.cu:hover { border-color: #059669; background: #d1fae5; color: #047857; }
+    .bank-chip.cu.selected { background: #059669; border-color: #059669; color: #fff; }
+    .bank-picker-wrap { display: flex; flex-direction: column; gap: 12px; }
+    .bank-search-box {
+      position: relative;
+    }
+    .bank-dropdown {
+      width: 100%;
+      height: 44px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 0 36px 0 14px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--navy);
+      background: var(--gray-50);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238A97B0' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      outline: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .bank-dropdown:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(34,167,240,0.1);
+      background-color: var(--white);
+    }
+
+    .bank-search-input {
+      width: 100%;
+      height: 44px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 0 14px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--navy);
+      background: var(--gray-50);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .bank-search-input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(34,167,240,0.1);
+      background: var(--white);
+    }
+    .bank-search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-400);
+      pointer-events: none;
+    }
+    .bank-results-count {
+      font-size: 11px;
+      color: var(--gray-400);
+      margin-top: -4px;
+    }
+    .bank-results-count span { color: var(--blue); font-weight: 600; }
+    .bank-loading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--gray-400);
+      padding: 8px 0;
+    }
+    .bank-spinner {
+      width: 16px; height: 16px;
+      border: 2px solid var(--gray-200);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .bank-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .bank-chip {
+      padding: 7px 14px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 999px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gray-600);
+      background: var(--white);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+      user-select: none;
+    }
+    .bank-chip:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+    .bank-chip.selected {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: var(--white);
+      font-weight: 600;
+    }
+    .bank-chip.other-chip { border-style: dashed; }
+    .bank-other-row {
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+    .bank-other-row.visible { display: flex; }
+    .bank-other-input {
+      flex: 1;
+      height: 40px;
+      border: 1.5px solid var(--blue);
+      border-radius: 10px;
+      padding: 0 12px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--navy);
+      background: var(--white);
+      outline: none;
+    }
+    .bank-other-add {
+      height: 40px;
+      padding: 0 18px;
+      background: var(--blue);
+      border: none;
+      border-radius: 10px;
+      font-family: var(--font-head);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--white);
+      cursor: pointer;
+    }
+    .bank-selected-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-height: 0;
+    }
+    .bank-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      background: var(--blue-light);
+      border: 1px solid rgba(34,167,240,0.3);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--blue);
+    }
+    .bank-tag button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--blue);
+      font-size: 15px;
+      line-height: 1;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      opacity: 0.7;
+    }
+    .bank-tag button:hover { opacity: 1; }
+    .bank-empty-hint {
+      font-size: 12px;
+      color: var(--gray-400);
+      font-style: italic;
+    }
+
+    /* ── VALIDATION ERROR ─────────────────────────────── */
+    .field-error {
+      border-color: var(--danger) !important;
+      box-shadow: 0 0 0 3px rgba(239,68,68,0.1) !important;
+    }
+    .error-msg {
+      font-size: 11px;
+      color: var(--danger);
+      margin-top: 2px;
+    }
+    .form-error-banner {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: #fef2f2;
+      border: 1px solid rgba(239,68,68,0.25);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--danger);
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+    .form-error-banner.visible { display: flex; }
+
+    @media (max-width: 600px) {
+      .card-top, .card-body { padding: 28px 24px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.span-2 { grid-column: span 1; }
+      .sig-row { grid-template-columns: 1fr; }
+      .expect-grid { grid-template-columns: 1fr; }
+      .confirm-steps { flex-direction: column; align-items: center; }
+
+      /* ── Prevent horizontal scroll ── */
+      html, body { overflow-x: hidden; max-width: 100vw; }
+
+      /* ── Sticky roadmap: logo hidden, steps centered ── */
+      .onboard-header {
+        padding: 0 16px;
+        height: 54px;
+        justify-content: center;
+      }
+      .onboard-logo { display: none !important; }
+
+      /* Step dots — compact, labels hidden */
+      .step-ind span { display: none; }
+      .step-ind { gap: 0; }
+      .step-dot {
+        width: 28px; height: 28px;
+        font-size: 11px;
+        font-weight: 800;
+      }
+      .step-ind.active .step-dot {
+        box-shadow: 0 0 0 4px rgba(34,167,240,0.2);
+      }
+      .step-connector { width: 24px; margin: 0 2px; }
+
+      /* Center ALL step card headers on mobile */
+      .card-top { text-align: center; }
+      .card-top .card-badge { margin-left: auto; margin-right: auto; }
+
+      /* Center all btn-rows on mobile */
+      .btn-row { justify-content: center; }
+      .btn-back { display: none; }
+      .btn-next { width: 100%; justify-content: center; }
+
+      /* Page padding */
+      .page-wrap { margin: 20px auto; padding: 0 14px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ─────────────────────────────────────────── -->
+<header class="onboard-header">
+  <div class="onboard-logo">
+    <img src="Brand_assets/CapitalQuest%20Consulting-R-02.png" alt="CapitalQuest" />
+  </div>
+  <div class="step-indicators">
+    <div class="step-ind active" id="ind-welcome">
+      <div class="step-dot" id="dot-1">1</div>
+      <span>Welcome</span>
+    </div>
+    <div class="step-connector" id="conn-1"></div>
+    <div class="step-ind" id="ind-contract">
+      <div class="step-dot" id="dot-2">2</div>
+      <span>Contract</span>
+    </div>
+    <div class="step-connector" id="conn-2"></div>
+    <div class="step-ind" id="ind-personal">
+      <div class="step-dot" id="dot-3">3</div>
+      <span>Personal</span>
+    </div>
+    <div class="step-connector" id="conn-3"></div>
+    <div class="step-ind" id="ind-business">
+      <div class="step-dot" id="dot-4">4</div>
+      <span>Business</span>
+    </div>
+    <div class="step-connector" id="conn-4"></div>
+    <div class="step-ind" id="ind-done">
+      <div class="step-dot" id="dot-5">5</div>
+      <span>Done</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── SCREENS ─────────────────────────────────────────── -->
+<div class="page-wrap">
+
+  <!-- SCREEN 1: WELCOME -->
+  <div class="screen active" id="screen-welcome">
+    <div class="card">
+      <div class="card-top welcome-card-top">
+        <div class="welcome-logo-wrap">
+          <img src="Brand_assets/CapitalQuest%20Consulting-R-02.png" alt="CapitalQuest Consulting" />
+        </div>
+        <div class="card-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Welcome to CapitalQuest Funding
+        </div>
+        <h1>We're excited to have you on board!</h1>
+        <p>At CapitalQuest Funding, our mission is to help business owners like you secure the capital needed to grow and scale your business.</p>
+      </div>
+      <div class="card-body">
+        <div class="expect-grid">
+          <div class="expect-item">
+            <div class="expect-icon">
+              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            </div>
+            <div class="expect-text">
+              <h4>Personalized Credit Optimization</h4>
+              <p>We analyze your credit profile and make strategic adjustments to position you for the highest funding approvals possible.</p>
+            </div>
+          </div>
+          <div class="expect-item">
+            <div class="expect-icon">
+              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+            </div>
+            <div class="expect-text">
+              <h4>Strategic Bank Matching</h4>
+              <p>We structure your applications to match the specific criteria each lender looks for, ensuring the best results.</p>
+            </div>
+          </div>
+          <div class="expect-item">
+            <div class="expect-icon">
+              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div class="expect-text">
+              <h4>Step-by-Step Guidance</h4>
+              <p>From credit analysis to funding applications, we guide you through every stage of the process.</p>
+            </div>
+          </div>
+          <div class="expect-item">
+            <div class="expect-icon">
+              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            </div>
+            <div class="expect-text">
+              <h4>Ongoing Support</h4>
+              <p>Direct access to Sam and Ali for credit adjustments, application strategies, and funding insights.</p>
+            </div>
+          </div>
+        </div>
+        <div class="btn-row" style="justify-content:center">
+          <button class="btn-next navy" onclick="goTo('contract')" style="padding:0 40px">
+            Next: Review &amp; Sign Contract
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: CONTRACT -->
+  <div class="screen" id="screen-contract">
+    <div class="card">
+      <div class="card-top">
+        <div class="card-badge">Step 2 of 5 · Contract</div>
+        <h1>Review Your Consulting Agreement</h1>
+        <p>Please read the full contract below. Scroll to the bottom to unlock the signature fields.</p>
+      </div>
+      <div class="card-body">
+
+        <div class="scroll-hint" id="scrollHint">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+          Scroll down to read the full agreement
+        </div>
+
+        <div class="contract-scroll" id="contractScroll" onscroll="checkScroll()">
+          <h2>CapitalQuest – Funding Agreement</h2>
+          <p class="contract-subtitle">Client Services Agreement · CapitalQuest Funding LLC</p>
+
+          <p>The undersigned <span id="contractClientName" style="display:inline-block;min-width:200px;border-bottom:2px solid var(--navy);font-weight:700;color:var(--blue);font-family:var(--font-head);padding:0 4px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> (name of Client), hereafter known as "Client", appoints and authorizes CapitalQuest Funding LLC, known as the "Consultant" or "Company", to find lender(s) and to submit financial data and information supplied by the Client, for the purpose of obtaining 0% interest personal or business credit cards, lines of credit, and/or term loans. CapitalQuest Funding is keenly aware of those lenders who are seeking customers with a specific credit profile. The approach for financing taken will be based upon the information supplied by the Client. Once the client is "cleared for funding" Client agrees to complete the soon to be provided "Questionnaire" truthfully to the best of their knowledge.</p>
+
+          <h3>Program Outline</h3>
+          <p>1 on 1 onboarding call with the Team to discuss funding rounds.</p>
+          <p>We will provide Client 0% interest business funding, loans, business lines of credit, and/or business term loan funding.</p>
+          <p>We will provide Client access to our step by step process on how to get funding on their own after they are approved from their funding rounds.</p>
+          <p>Direct access to the Team for any updates or questions.</p>
+          <p>Specifically, we will not apply for any short-term loans, credit facilities, or credit cards that accrue interest without obtaining explicit permission from the client involved. This policy underscores our commitment to upholding our clients' best interests and maintaining a high standard of fiduciary responsibility. Applications are completed by Consultant both online and over the phone. Some applications may require the client to go in person to the bank as directed by the Consultant.</p>
+          <p>Upon completion of the funding process, all client data will be deleted from our records. This includes personal identification information, financial records, and any other sensitive data collected during the funding process.</p>
+
+          <h3>Payment</h3>
+          <div class="highlight" id="contractPaymentClause">Loading payment terms…</div>
+          <p>The Client agrees to pay CapitalQuest Funding LLC for the 0% interest funding service and consulting.</p>
+          <p>The Client understands there may be additional costs to help optimize their personal credit profile. This will be determined during the optimization phase and does not apply to everyone. These costs include but are not limited to: paying credit card usage down, paying derogatory collections on the report as directed, adding authorized user tradelines, maintaining required credit monitoring, paying for any business credit reports deemed necessary, and anything else deemed necessary in the pursuit of preparing the client for funding during the optimization phase. In the event the client needs authorized user tradelines to bolster their credit report, this will be invoiced separately.</p>
+
+          <h3>Liability</h3>
+          <p>Client understands and agrees that there is no guarantee of success for each individual application or that a lender will issue a commitment. Consultant is not an employee of any financial institution and is not authorized to make any financial commitments on behalf of any Lender. The APR of all financing is determined individually by scoring and underwriting methods utilized by each lender. There are no guarantees made by the Consultant as to the terms of your approvals.</p>
+          <p>Client understands CapitalQuest Funding LLC shall not be held responsible or liable for any losses, damages, or consequences that may arise due to the client's default on any credit facilities, including but not limited to business credit cards, loans, or lines of credit, obtained with the assistance of CapitalQuest Funding LLC.</p>
+          <p>Client understands and agrees to all terms of this Agreement. This agreement shall be governed by and construed in accordance with the laws of the State of Michigan. The parties irrevocably submit and consent to the exclusive jurisdiction and venue of Michigan. The parties waive all rights to a trial by jury in any action or proceeding instituted in connection with this Agreement.</p>
+          <p>By signing this agreement, the client fully understands and agrees to all of the provisions included in this agreement. Client also understands that if the payment is not received within seven (7) days of being invoiced that the client's unpaid invoice could be sent to a collection agency. In the event that CapitalQuest Funding LLC is forced to use collections/legal services to secure payment owed or to recover an unlawful chargeback, client agrees to pay the collection/legal costs incurred. Not to exceed 25% of the balance owed.</p>
+
+          <h3>No Chargeback Clause</h3>
+          <p>The Client agrees not to initiate any chargeback on the investment paid to CapitalQuest Funding LLC. In the event of a chargeback, the Client will be subject to legal action, and the Company will pursue all necessary legal remedies to recover the chargeback amount.</p>
+
+          <h3>Additional Terms</h3>
+          <p>The Client also agrees to create a MyScoreIQ or Experian 3-bureau account and provide CapitalQuest Funding LLC with logins and passwords for the purpose of the Consultant making best recommendations to the Client and monitoring updates. Failure to have an active MyScoreIQ account or provide valid login will result in delayed funding results. Client also agrees to not apply for any uninstructed revolving credit accounts until the funding service is complete, as this would negatively impact Client's funding results.</p>
+
+          <h3>Personal Guarantee &amp; Authority</h3>
+          <p><strong>PERSONAL GUARANTEE:</strong> If the Client is an LLC, Corporation, LLP or other entity, then the individuals signing this Agreement hereby agree to, jointly and severally as applicable, personally guarantee the payment and collection of all fees and costs payable under this Agreement.</p>
+          <p>By executing this Agreement, Client hereby authorizes Company to:</p>
+          <ol>
+            <li>Act on behalf of the Client to obtain any financial and/or credit history from the credit reporting agencies for the purpose of determining the Client's creditworthiness;</li>
+            <li>Access financial information and account statements related to Client's lines of credit;</li>
+            <li>Forward Client's financial information to Company's business partners and affiliates to engage the services of professional advisors, lenders, etc. for the purpose of obtaining credit approval on behalf of Client;</li>
+            <li>Do all other acts necessary or incidental to the foregoing, including executing all documentation necessary to assist Client in obtaining credit approval.</li>
+          </ol>
+          <p><strong>SIGNATURE AUTHORITY:</strong> If the Client is an LLC, Corporation, LLP, or other entity, the undersigned hereby attests that he/she is an Officer or Director or Member with at least 25% ownership of the entity and has authority to bind the entity and enter into agreements on its behalf.</p>
+          <p style="margin-top:20px;font-weight:600;color:var(--navy)">By signing below, the client confirms they have read, understood, and agree to all terms of this Agreement.</p>
+        </div>
+
+        <div class="contract-read-check" id="readCheck" style="opacity:0.4;pointer-events:none">
+          <input type="checkbox" id="contractRead" />
+          <label for="contractRead" style="cursor:pointer">I have read and understand the full Consulting Agreement</label>
+        </div>
+
+        <div class="sig-row">
+          <div class="sig-box">
+            <div class="sig-label">Client Full Name</div>
+            <div class="sig-canvas-wrap">
+              <input class="sig-input-field" id="sigName" type="text" placeholder="Type your full legal name" oninput="updateSig()" />
+            </div>
+          </div>
+          <div class="sig-box">
+            <div class="sig-label">Signature</div>
+            <div class="sig-canvas-wrap">
+              <div class="sig-typed" id="sigPreview">Your name here</div>
+            </div>
+          </div>
+        </div>
+        <div class="sig-row" style="margin-top:12px">
+          <div class="sig-box" style="flex:1">
+            <div class="sig-label">Date</div>
+            <div class="sig-canvas-wrap">
+              <input class="sig-input-field" id="sigDate" type="text" readonly style="color:var(--navy);font-weight:600;cursor:default" />
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-back" onclick="goTo('welcome')">← Back</button>
+          <button class="btn-next" onclick="signContract()">
+            Sign &amp; Continue
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: PERSONAL INFO -->
+  <div class="screen" id="screen-personal">
+    <div class="card">
+      <div class="card-top">
+        <div class="card-badge">Step 3 of 5 · Personal Information</div>
+        <h1>Tell Us About Yourself</h1>
+        <p>Your personal information is used to verify your identity and pull your credit profile. All data is encrypted and secure.</p>
+      </div>
+      <div class="card-body">
+        <div class="autosave-notice">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Auto-saving your progress
+        </div>
+
+        <div id="personalErrorBanner" class="form-error-banner">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          Please fill in all required fields before continuing.
+        </div>
+
+        <div class="form-section-title">Basic Information</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>First Name *</label>
+            <input id="p_firstName" type="text" placeholder="James" />
+          </div>
+          <div class="form-group">
+            <label>Last Name *</label>
+            <input id="p_lastName" type="text" placeholder="Davis" />
+          </div>
+          <div class="form-group">
+            <label>Email Address *</label>
+            <input id="p_email" type="email" placeholder="james@email.com" />
+          </div>
+          <div class="form-group">
+            <label>Phone Number *</label>
+            <input id="p_phone" type="tel" placeholder="347-555-0192" />
+            <span class="field-hint">Format: ###-###-####</span>
+          </div>
+          <div class="form-group">
+            <label>Date of Birth *</label>
+            <input id="p_dob" type="date" />
+          </div>
+          <div class="form-group">
+            <label>Social Security Number *</label>
+            <input id="p_ssn" type="text" placeholder="###-##-####" />
+            <span class="field-hint">Format: ###-##-####</span>
+          </div>
+        </div>
+
+        <div class="form-section-title">Home Address</div>
+        <div class="form-grid">
+          <div class="form-group span-2">
+            <label>Street Address *</label>
+            <input id="p_street" type="text" placeholder="421 Park Avenue, Apt 8B" />
+          </div>
+          <div class="form-group">
+            <label>City *</label>
+            <input id="p_city" type="text" placeholder="New York" />
+          </div>
+          <div class="form-group">
+            <label>State *</label>
+            <select id="p_state">
+              <option value="">Select State</option>
+              <option>AL</option><option>AK</option><option>AZ</option><option>AR</option>
+              <option>CA</option><option>CO</option><option>CT</option><option>DE</option>
+              <option>FL</option><option>GA</option><option>HI</option><option>ID</option>
+              <option>IL</option><option>IN</option><option>IA</option><option>KS</option>
+              <option>KY</option><option>LA</option><option>ME</option><option>MD</option>
+              <option>MA</option><option>MI</option><option>MN</option><option>MS</option>
+              <option>MO</option><option>MT</option><option>NE</option><option>NV</option>
+              <option>NH</option><option>NJ</option><option>NM</option><option>NY</option>
+              <option>NC</option><option>ND</option><option>OH</option><option>OK</option>
+              <option>OR</option><option>PA</option><option>RI</option><option>SC</option>
+              <option>SD</option><option>TN</option><option>TX</option><option>UT</option>
+              <option>VT</option><option>VA</option><option>WA</option><option>WV</option>
+              <option>WI</option><option>WY</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>ZIP Code *</label>
+            <input id="p_zip" type="text" placeholder="10022" maxlength="10" />
+          </div>
+        </div>
+
+        <div class="form-section-title">Additional Personal Info</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Mother's Maiden Name *</label>
+            <input id="p_maiden" type="text" placeholder="Enter mother's maiden name" />
+          </div>
+          <div class="form-group">
+            <label>Personal Annual Income *</label>
+            <input id="p_income" type="text" placeholder="e.g. $75,000" />
+          </div>
+          <div class="form-group">
+            <label>Are You an American Citizen? *</label>
+            <select id="p_citizen">
+              <option value="">Select</option>
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-section-title">Banking & Credit</div>
+        <div class="form-group span-2" style="margin-bottom:4px;">
+          <label>Which Banks Do You Currently Bank With or Have a Credit Card With? (Personal) *</label>
+          <span class="field-hint" style="margin-bottom:8px;">Select all that apply — click a bank to add it</span>
+          <div class="bank-picker-wrap">
+            <div id="bankStateHint" class="bank-state-hint">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Select your state in the Home Address section above — we'll load every bank &amp; credit union in your area.
+            </div>
+            <div id="bankSearchWrap" style="display:none; flex-direction:column; gap:10px;">
+              <div class="bank-search-box">
+                <input id="bankSearchInput" class="bank-search-input" type="text" placeholder="Search banks &amp; credit unions..." oninput="filterBankChips(this.value)" />
+              </div>
+              <div id="bankResultsCount" class="bank-results-count"></div>
+            </div>
+            <div id="bankLoadingIndicator" class="bank-loading" style="display:none;">
+              <div class="bank-spinner"></div>
+              Loading all banks &amp; credit unions for your state...
+            </div>
+            <div class="bank-chips" id="personalBankChips"></div>
+            <div class="bank-other-row" id="bankOtherRow">
+              <input class="bank-other-input" id="bankOtherInput" type="text" placeholder="Enter bank name..." />
+              <button type="button" class="bank-other-add" onclick="addOtherBank()">Add</button>
+            </div>
+            <div class="bank-selected-list" id="personalBankSelected">
+              <span class="bank-empty-hint" id="bankEmptyHint">No banks selected yet</span>
+            </div>
+            <input type="hidden" id="p_banks" />
+          </div>
+        </div>
+
+        <div class="form-section-title" style="margin-top:28px;">Personal Credit Accounts (Last 6 Months)</div>
+        <div class="form-grid">
+          <div class="form-group span-2">
+            <label>New Personal Credit Accounts Opened *</label>
+            <textarea id="p_creditAccounts" rows="3" placeholder="List any new personal credit accounts opened in the last 6 months (e.g. Chase Freedom card - Jan 2025, Discover It - Mar 2025). Type 'None' if not applicable."></textarea>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-back" onclick="goTo('contract')">← Back</button>
+          <button class="btn-next" onclick="submitPersonal()">
+            Next: Business Info
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: BUSINESS INFO -->
+  <div class="screen" id="screen-business">
+    <div class="card">
+      <div class="card-top">
+        <div class="card-badge">Step 4 of 5 · Business Information</div>
+        <h1>Tell Us About Your Business</h1>
+        <p>This information is used to match you with the right funding strategy and bank applications.</p>
+      </div>
+      <div class="card-body">
+        <div class="autosave-notice">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Auto-saving your progress
+        </div>
+
+        <div id="businessErrorBanner" class="form-error-banner">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          Please fill in all required fields before submitting.
+        </div>
+
+        <div class="form-section-title">Business Details</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Legal Business Name *</label>
+            <input id="b_bizName" type="text" placeholder="Davis Ventures LLC" />
+          </div>
+          <div class="form-group">
+            <label>DBA Name</label>
+            <input id="b_dba" type="text" placeholder="If different from legal name" />
+          </div>
+          <div class="form-group">
+            <label>EIN (Employer ID Number) *</label>
+            <input id="b_ein" type="text" placeholder="82-4571039" />
+            <span class="field-hint">Format: ##-#######</span>
+          </div>
+          <div class="form-group">
+            <label>Business Date Established *</label>
+            <input id="b_dateEstablished" type="date" />
+          </div>
+          <div class="form-group">
+            <label>Business Type (LLC, etc) *</label>
+            <select id="b_bizType">
+              <option value="">Select Type</option>
+              <option>Sole Proprietorship</option>
+              <option>LLC</option>
+              <option>S-Corp</option>
+              <option>C-Corp</option>
+              <option>Partnership</option>
+              <option>Non-Profit</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Industry *</label>
+            <select id="b_industry">
+              <option value="">Select Industry</option>
+              <option>Real Estate</option>
+              <option>Construction</option>
+              <option>Retail</option>
+              <option>Restaurant / Food Service</option>
+              <option>Healthcare</option>
+              <option>Transportation / Logistics</option>
+              <option>Technology</option>
+              <option>Consulting / Professional Services</option>
+              <option>E-Commerce</option>
+              <option>Manufacturing</option>
+              <option>Trucking</option>
+              <option>Beauty / Salon</option>
+              <option>Auto / Dealership</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Employee Count *</label>
+            <select id="b_employees">
+              <option value="">Select</option>
+              <option>Just me (1)</option>
+              <option>2–5</option>
+              <option>6–10</option>
+              <option>11–25</option>
+              <option>26–50</option>
+              <option>51–100</option>
+              <option>100+</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Average Monthly Sales *</label>
+            <input id="b_monthlySales" type="text" placeholder="e.g. $15,000" />
+          </div>
+          <div class="form-group">
+            <label>Ownership % *</label>
+            <input id="b_ownership" type="text" placeholder="e.g. 100%" />
+            <span class="field-hint">Your percentage of ownership in this business</span>
+          </div>
+          <div class="form-group">
+            <label>Company Phone # *</label>
+            <input id="b_phone" type="tel" placeholder="212-555-0100" />
+            <span class="field-hint">Format: ###-###-####</span>
+          </div>
+          <div class="form-group">
+            <label>Desired Loan Amount *</label>
+            <input id="b_loanAmount" type="text" placeholder="e.g. $50,000" />
+          </div>
+          <div class="form-group">
+            <label>Reason For Loan *</label>
+            <select id="b_loanReason">
+              <option value="">Select Reason</option>
+              <option>Working Capital</option>
+              <option>Equipment Purchase</option>
+              <option>Inventory</option>
+              <option>Real Estate</option>
+              <option>Business Expansion</option>
+              <option>Debt Consolidation</option>
+              <option>Payroll</option>
+              <option>Marketing / Advertising</option>
+              <option>Startup Costs</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-section-title">Business Address</div>
+        <div class="form-grid">
+          <div class="form-group span-2">
+            <label>Street Address *</label>
+            <input id="b_street" type="text" placeholder="421 Park Avenue, Suite 500" />
+          </div>
+          <div class="form-group">
+            <label>City *</label>
+            <input id="b_city" type="text" placeholder="New York" />
+          </div>
+          <div class="form-group">
+            <label>State *</label>
+            <select id="b_state">
+              <option value="">Select State</option>
+              <option>AL</option><option>AK</option><option>AZ</option><option>AR</option>
+              <option>CA</option><option>CO</option><option>CT</option><option>DE</option>
+              <option>FL</option><option>GA</option><option>HI</option><option>ID</option>
+              <option>IL</option><option>IN</option><option>IA</option><option>KS</option>
+              <option>KY</option><option>LA</option><option>ME</option><option>MD</option>
+              <option>MA</option><option>MI</option><option>MN</option><option>MS</option>
+              <option>MO</option><option>MT</option><option>NE</option><option>NV</option>
+              <option>NH</option><option>NJ</option><option>NM</option><option>NY</option>
+              <option>NC</option><option>ND</option><option>OH</option><option>OK</option>
+              <option>OR</option><option>PA</option><option>RI</option><option>SC</option>
+              <option>SD</option><option>TN</option><option>TX</option><option>UT</option>
+              <option>VT</option><option>VA</option><option>WA</option><option>WV</option>
+              <option>WI</option><option>WY</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>ZIP Code *</label>
+            <input id="b_zip" type="text" placeholder="10022" maxlength="10" />
+          </div>
+        </div>
+
+        <div class="form-section-title">Business Banking & Credit</div>
+
+        <div class="form-group span-2" style="margin-bottom:4px;">
+          <label>Who Does Your Business Bank With or Have a Credit Card With? *</label>
+          <span class="field-hint" style="margin-bottom:8px;">Select all that apply — click a bank to add it</span>
+          <div class="bank-picker-wrap">
+            <div id="bizBankStateHint" class="bank-state-hint">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Select your business state in the Business Address section above — we'll load every bank in your area.
+            </div>
+            <div id="bizBankSearchWrap" style="display:none; flex-direction:column; gap:10px;">
+              <div class="bank-search-box">
+                <input id="bizBankSearchInput" class="bank-search-input" type="text" placeholder="Search banks &amp; credit unions..." oninput="filterBizBankChips(this.value)" />
+              </div>
+              <div id="bizBankResultsCount" class="bank-results-count"></div>
+            </div>
+            <div id="bizBankLoadingIndicator" class="bank-loading" style="display:none;">
+              <div class="bank-spinner"></div>
+              Loading all banks &amp; credit unions for your state...
+            </div>
+            <div class="bank-chips" id="bizBankChips"></div>
+            <div class="bank-other-row" id="bizBankOtherRow">
+              <input class="bank-other-input" id="bizBankOtherInput" type="text" placeholder="Enter bank name..." />
+              <button type="button" class="bank-other-add" onclick="addOtherBizBank()">Add</button>
+            </div>
+            <div class="bank-selected-list" id="bizBankSelected">
+              <span class="bank-empty-hint">No banks selected yet</span>
+            </div>
+            <input type="hidden" id="b_bankingRelationships" />
+          </div>
+        </div>
+
+        <div class="form-group span-2" style="margin-top:20px;">
+          <label>Current Business Credit Cards *</label>
+          <span class="field-hint" style="margin-bottom:8px;">Select all cards you currently hold — click to add</span>
+          <div class="bank-picker-wrap">
+
+            <div class="bank-chips" id="ccChips">
+              <!-- Chase -->
+              <div class="bank-group-label">Chase</div>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'Chase Ink Cash')">Chase Ink Cash</button>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'Chase Ink Unlimited')">Chase Ink Unlimited</button>
+
+              <!-- American Express -->
+              <div class="bank-group-label">American Express</div>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'Amex Blue Cash Business')">Amex Blue Cash</button>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'Amex Blue Plus Business')">Amex Blue Plus</button>
+
+              <!-- Wells Fargo -->
+              <div class="bank-group-label">Wells Fargo</div>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'Wells Fargo Signify Business Cash')">Wells Fargo Signify Business Cash</button>
+
+              <!-- Bank of America -->
+              <div class="bank-group-label">Bank of America</div>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'BofA Platinum Plus Mastercard')">Platinum Plus Mastercard</button>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'BofA Advantage Unlimited Cash')">Advantage Unlimited Cash</button>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'BofA Advantage Customized Cash')">Advantage Customized Cash</button>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'BofA Advantage Travel Rewards')">Advantage Travel Rewards</button>
+
+              <!-- PNC -->
+              <div class="bank-group-label">PNC</div>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'PNC Visa Business')">PNC Visa Business</button>
+
+              <!-- Truist -->
+              <div class="bank-group-label">Truist</div>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'Truist Business Cash Rewards')">Truist Business Cash Rewards</button>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'Truist Business Credit Card')">Truist Business Credit Card</button>
+
+              <!-- US Bank -->
+              <div class="bank-group-label">US Bank</div>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'US Bank Triple Cash')">US Bank Triple Cash</button>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'US Bank Business Platinum')">US Bank Business Platinum</button>
+
+              <!-- BMO Harris -->
+              <div class="bank-group-label">BMO Harris</div>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'BMO Harris Business Platinum')">BMO Harris Business Platinum</button>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'BMO Harris Business Platinum Rewards')">BMO Harris Business Platinum Rewards</button>
+
+              <!-- Goldman Sachs / Marcus -->
+              <div class="bank-group-label">Marcus by Goldman Sachs</div>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'Marcus by Goldman Business Mastercard')">Marcus Business Mastercard</button>
+
+              <!-- Citizens -->
+              <div class="bank-group-label">Citizens Bank</div>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'Citizens Business Platinum')">Citizens Business Platinum</button>
+
+              <!-- TD Bank -->
+              <div class="bank-group-label">TD Bank</div>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'TD Bank Business Solutions')">TD Bank Business Solutions</button>
+
+              <!-- M&T Bank -->
+              <div class="bank-group-label">M&amp;T Bank</div>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'M&T Bank Business Rewards Card')">M&amp;T Bank Business Rewards Card</button>
+
+              <!-- Regions -->
+              <div class="bank-group-label">Regions Bank</div>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'Regions Business Visa Card')">Regions Business Visa Card</button>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'Regions Business Enhanced Visa')">Regions Business Enhanced Visa</button>
+
+              <!-- Other regional -->
+              <div class="bank-group-label">Other Banks</div>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'Flagstar Bank Business Card')">Flagstar Bank Business Card</button>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'KeyBank Business Card')">KeyBank Business Card</button>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'Univest Bank Business Card')">Univest Bank Business Card</button>
+              <button type="button" class="bank-chip" onclick="toggleCC(this,'Connexus CU Business Card')">Connexus CU Business Card</button>
+              <button type="button" class="bank-chip other-chip" onclick="toggleOtherCC()">+ Other</button>
+            </div>
+
+            <div class="bank-other-row" id="ccOtherRow">
+              <input class="bank-other-input" id="ccOtherInput" type="text" placeholder="Enter card name..." />
+              <button type="button" class="bank-other-add" onclick="addOtherCC()">Add</button>
+            </div>
+
+            <div class="bank-selected-list" id="ccSelected">
+              <span class="bank-empty-hint">No cards selected — select above or type 'None' if you have no business credit cards</span>
+            </div>
+            <input type="hidden" id="b_creditCards" />
+
+            <div style="margin-top:8px;">
+              <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gray-500);cursor:pointer;">
+                <input type="checkbox" id="ccNoneCheck" onchange="toggleCCNone(this)" style="accent-color:var(--blue);width:16px;height:16px;" />
+                I don't currently have any business credit cards
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section-title">Security & Account Access</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Security Question *</label>
+            <select id="b_secQ">
+              <option value="">Select a security question</option>
+              <option>What was the name of your first pet?</option>
+              <option>What city were you born in?</option>
+              <option>What is your mother's maiden name?</option>
+              <option>What was the make of your first car?</option>
+              <option>What elementary school did you attend?</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Security Answer *</label>
+            <input id="b_secA" type="text" placeholder="Your answer" />
+          </div>
+          <div class="form-group">
+            <label>4-Digit PIN *</label>
+            <input id="b_pin" type="password" placeholder="••••" maxlength="4" />
+            <span class="field-hint">Used to verify your identity for sensitive actions</span>
+          </div>
+          <div class="form-group">
+            <label>Confirm PIN *</label>
+            <input id="b_pinConfirm" type="password" placeholder="••••" maxlength="4" />
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-back" onclick="goTo('personal')">← Back</button>
+          <button class="btn-next success" onclick="submitBusiness()">
+            Submit Onboarding
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN 5: CONFIRMATION -->
+  <div class="screen" id="screen-done">
+    <div class="card">
+      <div class="card-body">
+        <div class="confirm-wrap">
+          <div class="confirm-icon">
+            <svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#10b981" stroke-width="2.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h2>Onboarding Complete!</h2>
+          <p>Thank you! Your onboarding is complete. Our team will now review your details and update your progress inside the app. Stay tuned for updates from Sam and Ali!</p>
+          <div class="confirm-steps">
+            <div class="confirm-step">
+              <div class="num">24h</div>
+              <div class="lbl">Team reviews your profile</div>
+            </div>
+            <div class="confirm-step">
+              <div class="num">48h</div>
+              <div class="lbl">Credit analysis begins</div>
+            </div>
+            <div class="confirm-step">
+              <div class="num">7d</div>
+              <div class="lbl">First update in portal</div>
+            </div>
+          </div>
+          <button class="btn-next navy" onclick="window.location.href='dashboard.html'" style="margin:0 auto;justify-content:center">
+            Go to My Dashboard
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page-wrap -->
+
+<script>
+  const screenMap = {
+    welcome:  { screen: 'screen-welcome',  ind: 'ind-welcome',  step: 1 },
+    contract: { screen: 'screen-contract', ind: 'ind-contract', step: 2 },
+    personal: { screen: 'screen-personal', ind: 'ind-personal', step: 3 },
+    business: { screen: 'screen-business', ind: 'ind-business', step: 4 },
+    done:     { screen: 'screen-done',     ind: 'ind-done',     step: 5 },
+  };
+  const stepOrder = ['welcome','contract','personal','business','done'];
+
+  let currentStep = 'welcome';
+
+  function goTo(name) {
+    // Hide all screens
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screenMap[name].screen).classList.add('active');
+
+    // Update indicators
+    const targetStep = screenMap[name].step;
+    stepOrder.forEach((s, i) => {
+      const ind = document.getElementById('ind-' + s);
+      const dot = document.getElementById('dot-' + (i + 1));
+      const conn = document.getElementById('conn-' + (i + 1));
+      ind.classList.remove('active', 'done');
+      if (conn) conn.classList.remove('done');
+
+      if (i + 1 < targetStep) {
+        ind.classList.add('done');
+        dot.textContent = '✓';
+        if (conn) conn.classList.add('done');
+      } else if (i + 1 === targetStep) {
+        ind.classList.add('active');
+        dot.textContent = i + 1;
+      } else {
+        dot.textContent = i + 1;
+      }
+    });
+
+    currentStep = name;
+    window.scrollTo(0, 0);
+  }
+
+  // ── CONTRACT SETUP ───────────────────────────────────
+  // Admin assigns contract via URL params:
+  //   ?contract=full|split|backend  — contract type
+  //   &amount=3500                  — fee amount (no $ sign needed)
+  //   &pct=10                       — backend success % (backend only)
+  // When admin panel is built these will be set automatically per client.
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const contractKey = urlParams.get('contract') || localStorage.getItem('cq_contract') || 'full';
+  const feeAmount   = urlParams.get('amount')   || localStorage.getItem('cq_amount')   || '____________';
+  const feePct      = urlParams.get('pct')      || localStorage.getItem('cq_pct')      || '8';
+
+  localStorage.setItem('cq_contract', contractKey);
+  localStorage.setItem('cq_amount',   feeAmount);
+  localStorage.setItem('cq_pct',      feePct);
+
+  const amountStr = feeAmount === '____________' ? '$____________' : '$' + Number(feeAmount).toLocaleString();
+
+  const paymentClauses = {
+    full:    `Client acknowledges the program investment will be the amount of ${amountStr}. The Client agrees to pay CapitalQuest Funding LLC the full amount at the execution of this agreement.`,
+    split:   `Client acknowledges the program investment will be the total amount of ${amountStr}. The payment will be split into 2 (two) equal payments. Half will be due at the execution of this agreement, the other half will be due in 30 (thirty) days.`,
+    backend: `Client acknowledges the program SET UP FEE is the amount of ${amountStr}. The client will also be responsible for paying ${feePct}% of the total funded amount as a success fee. If cards come at different times, client will be responsible for paying the ${feePct}% success fee as each one arrives. Client agrees to pay within 24 hours of receiving the cards.`
+  };
+
+  // Inject the correct payment clause
+  document.getElementById('contractPaymentClause').textContent = paymentClauses[contractKey] || paymentClauses.full;
+
+  // ── SCROLL TO UNLOCK ─────────────────────────────────
+  function checkScroll() {
+    const el = document.getElementById('contractScroll');
+    const readCheck = document.getElementById('readCheck');
+    const hint = document.getElementById('scrollHint');
+    const scrolled = el.scrollTop + el.clientHeight >= el.scrollHeight - 60;
+    if (scrolled) {
+      readCheck.style.opacity = '1';
+      readCheck.style.pointerEvents = 'auto';
+      hint.classList.add('hidden');
+    }
+  }
+
+  // Signature preview + live name in contract
+  function updateSig() {
+    const name = document.getElementById('sigName').value;
+    document.getElementById('sigPreview').textContent = name || 'Your name here';
+    document.getElementById('sigPreview').style.color = name ? '#0A1628' : '#B8C4D8';
+    const nameSpan = document.getElementById('contractClientName');
+    if (name) {
+      nameSpan.textContent = name;
+      nameSpan.style.color = 'var(--blue)';
+    } else {
+      nameSpan.innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+      nameSpan.style.color = 'var(--gray-300)';
+    }
+  }
+
+  // Auto-fill today's date
+  const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const dateEl = document.getElementById('sigDate');
+  if (dateEl) dateEl.value = today;
+
+  function signContract() {
+    const checked = document.getElementById('contractRead').checked;
+    const name = document.getElementById('sigName').value.trim();
+    if (!checked) {
+      alert('Please scroll through and confirm you\'ve read the full contract.');
+      return;
+    }
+    if (!name) {
+      alert('Please type your full legal name to sign.');
+      return;
+    }
+    localStorage.setItem('cq_signed_contract', contractKey);
+    localStorage.setItem('cq_signed_name', name);
+    goTo('personal');
+  }
+
+  // ── LIVE BANK + CU LOADER (FDIC + NCUA APIs) ─────────
+  let allBanksForState = [];
+
+  const stateNames = {
+    AL:'Alabama',AK:'Alaska',AZ:'Arizona',AR:'Arkansas',CA:'California',
+    CO:'Colorado',CT:'Connecticut',DC:'District Of Columbia',DE:'Delaware',
+    FL:'Florida',GA:'Georgia',HI:'Hawaii',ID:'Idaho',IL:'Illinois',IN:'Indiana',
+    IA:'Iowa',KS:'Kansas',KY:'Kentucky',LA:'Louisiana',ME:'Maine',MD:'Maryland',
+    MA:'Massachusetts',MI:'Michigan',MN:'Minnesota',MS:'Mississippi',MO:'Missouri',
+    MT:'Montana',NE:'Nebraska',NV:'Nevada',NH:'New Hampshire',NJ:'New Jersey',
+    NM:'New Mexico',NY:'New York',NC:'North Carolina',ND:'North Dakota',OH:'Ohio',
+    OK:'Oklahoma',OR:'Oregon',PA:'Pennsylvania',RI:'Rhode Island',SC:'South Carolina',
+    SD:'South Dakota',TN:'Tennessee',TX:'Texas',UT:'Utah',VT:'Vermont',VA:'Virginia',
+    WA:'Washington',WV:'West Virginia',WI:'Wisconsin',WY:'Wyoming'
+  };
+
+  async function loadBanksForState(state) {
+    if (!state) return;
+    const hint    = document.getElementById('bankStateHint');
+    const loading = document.getElementById('bankLoadingIndicator');
+    const search  = document.getElementById('bankSearchWrap');
+    const container = document.getElementById('personalBankChips');
+    const count   = document.getElementById('bankResultsCount');
+
+    hint.style.display    = 'none';
+    search.style.display  = 'none';
+    loading.style.display = 'flex';
+    container.innerHTML   = '';
+    count.innerHTML       = '';
+    document.getElementById('bankSearchInput').value = '';
+    allBanksForState = [];
+
+    const [fdicBanks, ncuaCUs] = await Promise.allSettled([
+      fetchFDICBanks(state),
+      fetchNCUACUs(state)
+    ]);
+
+    const fdicRaw = fdicBanks.status === 'fulfilled' ? fdicBanks.value : [];
+    const cuRaw   = ncuaCUs.status  === 'fulfilled' ? ncuaCUs.value  : (fallbackCUs[state] || []);
+
+    // Hardcoded major banks filtered for this state
+    const majors = majorBankList
+      .filter(b => b.states.length === 0 || b.states.includes(state))
+      .map(b => ({ name: b.name, type: 'major' }));
+
+    // FDIC banks — exclude ones that match major bank names (no duplicates)
+    const localBanks = fdicRaw
+      .filter(n => !isFdicMajor(n))
+      .map(n => ({ name: n, type: 'bank' }));
+
+    const cus = cuRaw.map(n => ({ name: typeof n === 'string' ? n : n.name, type: 'cu' }));
+
+    allBanksForState = [...majors, ...localBanks, ...cus];
+
+    loading.style.display = 'none';
+    search.style.display  = 'flex';
+    renderFilteredChips('');
+  }
+
+  async function fetchFDICBanks(state) {
+    try {
+      const url = `https://banks.data.fdic.gov/api/institutions?filters=STALP%3A${state}%20AND%20ACTIVE%3A1&fields=NAME&limit=2000&sort_by=ASSET&sort_order=DESC&output=json`;
+      const res  = await fetch(url);
+      const data = await res.json();
+      return (data.data || []).map(b => b.data.NAME);
+    } catch(e) { return []; }
+  }
+
+  async function fetchNCUACUs(state) {
+    try {
+      // NCUA public research data endpoint
+      const url = `https://ncua.gov/api/CreditUnionData/GetCreditUnionByState/${state}?start=0&limit=2000`;
+      const res  = await fetch(url, { mode: 'cors' });
+      if (!res.ok) throw new Error('NCUA API error');
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        return data.map(cu => cu.CreditUnionName || cu.creditUnionName || cu.Name || '').filter(Boolean);
+      }
+      throw new Error('unexpected format');
+    } catch(e) {
+      // Fall back to curated list if NCUA API has CORS issues
+      return (fallbackCUs[state] || []);
+    }
+  }
+
+  // Curated fallback CU list (used if NCUA API is unreachable)
+  const fallbackCUs = {
+    AL:['Redstone FCU','Alabama CU','MAX CU','APCO CU','Alabama One CU','Listerhill CU','Family Security CU','Members CU','Peoples Choice CU','ALATRUST CU'],
+    AK:['Alaska USA FCU','Credit Union 1','Denali FCU','True North FCU','Tongass FCU','Matanuska Valley FCU'],
+    AZ:['Desert Financial CU','Arizona FCU','TruWest CU','Vantage West CU','OneAZ CU','Hughes FCU','Arizona State CU','Tucson FCU','SunWest FCU','Tempe Schools CU'],
+    AR:['Arkansas FCU','Telcoe FCU','Arkansas Best FCU','Diamond Lakes FCU','Natural State FCU','REV FCU','Southern Bancorp CU'],
+    CA:['Golden 1 CU','SchoolsFirst FCU','Patelco CU','First Tech FCU','Star One CU','Kinecta FCU','Travis CU','San Diego County CU','Orange County CU','Provident CU','SAFE CU','CoastHills CU','Technology CU','Xceed Financial CU','Bay FCU'],
+    CO:['Ent CU','Bellco CU','Canvas CU','Westerra CU','Elevations CU','Colorado CU','Air Academy FCU','Sooper CU','Rocky Mountain CU','Glacier Hills CU'],
+    CT:['Sikorsky Financial CU','Charter Oak CU','American Eagle FCU','Connex CU','Nutmeg State Financial CU','First New England FCU','Education First FCU','Hartford Healthcare CU'],
+    DC:['Congressional FCU','Police FCU','Treasury Dept FCU','Department of Labor FCU','Industrial Bank FCU'],
+    DE:['DEXSTA FCU','Delaware Alliance FCU','Member One FCU','Dupont Community CU'],
+    FL:['Suncoast CU','Space Coast CU','Achieva CU','Brightstar CU','Power Financial CU','CFE FCU','GTE Financial CU','Pen Air FCU','Campus USA CU','Envision CU','Grow Financial FCU','MidFlorida CU','Publix Employees FCU','First Florida CU','USF FCU'],
+    GA:['Delta Community CU',"Georgia's Own CU",'LGE Community CU','Associated CU','Kinetic CU','Atlanta Postal CU','Robins Financial CU','Georgia United CU','Point Loma CU','Peach State FCU'],
+    HI:['Hawaii State FCU','Aloha Pacific FCU','HawaiiUSA FCU','University of Hawaii FCU','Pearl Hawaii FCU','Hawaii Community FCU'],
+    ID:['Idaho Central CU','STCU','Icon CU','Pocatello Idaho CU','East Idaho CU','iQ CU','Sunwest CU'],
+    IL:['Consumers CU','Baxter CU','Illinois State CU','Heartland CU','MidAmerica FCU','Scott CU','NorthStar CU','Service 1st FCU','ISU CU','Midwest CU'],
+    IN:['Indiana Members CU','Elements Financial','Teachers CU','Forum CU','Notre Dame FCU','Purdue FCU','Beacon FCU','Three Rivers FCU','Centra CU','Hoosier Hills CU'],
+    IA:['GreenState CU','IHMVCU','University of Iowa CU','Dupaco Community CU','Collins Community CU','Linn Area CU','Iowa State Bank FCU'],
+    KS:['Azura CU','Credit Union of America','Meritrust CU','Envista CU','Truity FCU','Kansas CU'],
+    KY:["L&N FCU",'Commonwealth CU','Park Community CU','OMNI CU','Service One CU','Centurion CU','Forcht Bank CU'],
+    LA:['Pelican State CU','ASI FCU','Barksdale FCU','LA Capitol FCU','Jefferson Financial FCU','New Orleans Firemen FCU','Neighbors FCU','Gulf Coast Educators FCU'],
+    ME:['Infinity FCU','Midcoast FCU','Town & Country FCU','Evergreen CU','Maine Savings FCU','Maine State CU','Saco Valley CU'],
+    MD:['MECU','Tower FCU','SECU Maryland','Congressional FCU','APL FCU','NASA FCU','Signal Financial FCU','Educational Systems FCU','NIH FCU','SkyPoint FCU'],
+    MA:['DCU','Metro CU','HarborOne CU','Workers CU',"St. Anne's CU",'Jeanne D\'Arc CU','Greylock FCU','Rockland Trust CU','St. Jean CU'],
+    MI:['MSUFCU','Lake Michigan CU','Genisys CU','United FCU','Honor CU','Kellogg Community FCU','Consumers CU','Dow Chemical Employees CU','Alliance Catholic CU','Isabella Community CU'],
+    MN:['Wings Financial CU','Affinity Plus FCU','Spire CU','Hiway FCU','Firefly CU','Beacon CU','Mayo Employees FCU','Mid Minnesota FCU','Central MN CU','Topline FCU'],
+    MS:['Singing River FCU','Keesler FCU','Mississippi FCU','Southern FCU','Mid-South FCU','Magnolia FCU','Statewide FCU'],
+    MO:['First Community CU','Show Me CU','Anheuser-Busch ECU','Empower CU','Saint Louis CU','Vantage CU','Allegiance CU','Kansas City Police CU'],
+    MT:['Missoula FCU','Wheatland FCU','Montana FCU','Glacier Hills CU','Montana Health FCU'],
+    NE:['Centris FCU','SAC FCU','Cobalt CU','Lincoln FCU','Omaha Douglas FCU','Mutual 1st FCU','Credit Union of the Midlands'],
+    NV:['Greater Nevada CU','America First CU','Clark County CU','Silver State Schools CU','Nevada FCU','One Nevada CU','Boulder Dam CU','Southwest Medical FCU'],
+    NH:["St. Mary's Bank CU",'Members First CU','Service CU','Granite State CU','Northeast CU','Triangle CU','Bellwether Community CU'],
+    NJ:['Affinity FCU','NJ FCU','Credit Union of NJ','Aspire FCU','Cross County FCU','Metuchen FCU'],
+    NM:['Nusenda CU','Sandia Laboratory FCU','Rio Grande CU','Kirtland FCU','White Sands FCU','Del Norte CU','New Mexico FCU'],
+    NY:['Bethpage FCU','NEFCU','Municipal CU','Nassau Educators FCU','ESL FCU','Hudson Valley FCU','Island FCU','Poughkeepsie Galleria CU','Sperry Associates FCU','NEFCU','North Country FCU'],
+    NC:['State Employees CU','Coastal FCU','Allegacy FCU','Local Government FCU','Truliant FCU','Carolinas Telco FCU','Self-Help CU','Uwharrie CU'],
+    ND:['Space Age FCU','Dakotaland FCU','Midwest Family FCU','Gate City Bank CU'],
+    OH:['Wright-Patt CU','Day Air CU','KEMBA Financial CU','Superior CU','Ohio University CU','PowerOne FCU','Cleveland Police FCU','Alternatives FCU','Air Force One FCU'],
+    OK:['Tinker FCU','WeoSave CU','Heartland CU','TTCU FCU','Tulsa FCU','Oklahoma CU','Communication FCU'],
+    OR:['OnPoint Community CU','Unitus Community CU','Oregon Community CU','First Tech FCU','Advantis CU','Rogue CU','Mid Oregon CU','Selco Community CU','Trailhead CU','Northwest Community CU'],
+    PA:['PSECU','TruMark Financial CU','Police & Fire FCU','Philadelphia FCU','Members 1st FCU','Service 1st FCU','AmeriChoice FCU','Citadel CU','Clearview FCU','Diamond CU','Patriot FCU'],
+    RI:['Navigant CU','Pawtucket CU','Ocean State CU','Westerly Community CU','Providence Teachers CU','Coastway CU'],
+    SC:['Sharonview FCU','Founders FCU','SC State CU','Members CU','Palmetto Citizens FCU','Murrells Inlet CU'],
+    SD:['Black Hills FCU','Dakotaland FCU','Rushmore Electric FCU','Prairie FCU','Western Dakota CU','Home Federal CU'],
+    TN:['Tennessee Valley FCU','ORNL FCU','Y-12 FCU','Knoxville TVA Employees CU','Memphis City Employees CU','Mid-South FCU','Tennessee Teachers CU','Appalachian Power ECU'],
+    TX:['RBFCU','EECU','Amplify CU','University FCU','Texas Dow Employees CU','Texas Trust CU','Greater Texas FCU','San Antonio FCU','Texans CU','JSC FCU','Houston Federal CU','First Service CU','Members Choice CU','Security Service FCU','SDFCU'],
+    UT:['Mountain America CU','America First CU','Utah Community CU','Cyprus CU','Utah Power CU','Goldenwest CU','UFirst FCU','Cache Valley Bank CU'],
+    VT:['VSECU','Green Mountain CU','NorthCountry FCU','Vermont State Employees CU'],
+    VA:['Apple FCU','Virginia CU','Langley FCU','ABNB FCU','Cardinal FCU','State Department FCU','Dupont Community CU','National Education Assoc FCU'],
+    WA:['BECU','WSECU','Spokane Teachers CU','Sound CU','HAPO Community CU','Numerica CU','Verity CU','iQ CU','Salal CU','Columbia CU'],
+    WV:['WV United FCU','Pioneer WV FCU','Eastern Panhandle CU','Mountaineer CU','City National CU'],
+    WI:['Landmark CU','Educators CU','Summit CU','Verve CU','Altra FCU','Capital CU','Royal CU','UW CU','Heartland CU'],
+    WY:['WyHy FCU','Meridian Trust FCU','Goshen Community FCU','Carbon County CU','Natrona County Schools FCU'],
+  };
+
+  // ── HARDCODED MAJOR BANKS (always shown, filtered by state) ──
+  // states: [] = available nationwide
+  const majorBankList = [
+    { name: 'Chase',                 states: [] },
+    { name: 'Bank of America',       states: [] },
+    { name: 'Wells Fargo',           states: [] },
+    { name: 'American Express',      states: [] },
+    { name: 'Capital One',           states: [] },
+    { name: 'Ally Bank',             states: [] },
+    { name: 'Discover Bank',         states: [] },
+    { name: 'Goldman Sachs / Marcus',states: [] },
+    { name: 'Synchrony Bank',        states: [] },
+    { name: 'Citibank',              states: ['CA','CT','DC','FL','IL','MD','NJ','NV','NY','TX','VA'] },
+    { name: 'US Bank',               states: ['AL','AZ','AR','CA','CO','ID','IL','IN','IA','KS','KY','MN','MO','MT','NE','NV','NM','ND','OH','OR','SD','TN','UT','WA','WI','WY'] },
+    { name: 'PNC Bank',              states: ['AL','DC','DE','FL','GA','IL','IN','KY','MD','MI','MO','NJ','NY','NC','OH','PA','SC','TX','VA','WI','WV'] },
+    { name: 'TD Bank',               states: ['CT','DC','DE','FL','MA','MD','ME','NC','NH','NJ','NY','PA','RI','SC','VA','VT'] },
+    { name: 'Truist',                states: ['AL','AR','DC','FL','GA','IN','KY','MD','MS','NC','NJ','OH','PA','SC','TN','TX','VA','WV'] },
+    { name: 'Regions Bank',          states: ['AL','AR','FL','GA','IL','IN','IA','KY','LA','MS','MO','NC','SC','TN','TX','VA'] },
+    { name: 'Fifth Third Bank',      states: ['FL','GA','IL','IN','KY','MI','MO','NC','OH','TN','WV'] },
+    { name: 'KeyBank',               states: ['AK','CO','ID','IN','ME','MI','NY','OH','OR','PA','UT','VT','WA'] },
+    { name: 'BMO Harris Bank',       states: ['AZ','FL','IL','IN','KS','MN','MO','WI'] },
+    { name: 'Citizens Bank',         states: ['CT','DC','DE','MA','MD','MI','NH','NJ','NY','OH','PA','RI','VA','VT'] },
+    { name: 'Huntington Bank',       states: ['CO','IL','IN','KY','MI','MN','OH','PA','SD','WV','WI'] },
+    { name: 'M&T Bank',              states: ['CT','DC','DE','MD','NJ','NY','PA','VA','WV'] },
+    { name: 'Santander Bank',        states: ['CT','DC','DE','FL','MA','MD','NH','NJ','NY','PA','RI','VT'] },
+    { name: 'Comerica Bank',         states: ['AZ','CA','FL','MI','TX'] },
+    { name: 'Frost Bank',            states: ['TX'] },
+    { name: 'Texas Capital Bank',    states: ['TX'] },
+    { name: 'Prosperity Bank',       states: ['TX','OK'] },
+    { name: 'Glacier Bank',          states: ['AK','CO','ID','MT','ND','OR','UT','WA','WY'] },
+    { name: 'Zions Bank',            states: ['AZ','CA','CO','ID','NV','NM','OR','TX','UT','WA'] },
+    { name: 'Banner Bank',           states: ['CA','ID','OR','WA'] },
+    { name: 'Washington Federal',    states: ['AZ','ID','NM','NV','OR','TX','UT','WA'] },
+    { name: 'Wintrust Bank',         states: ['IL','IN','WI'] },
+    { name: 'Pinnacle Bank',         states: ['TN','VA','NC'] },
+    { name: 'Simmons Bank',          states: ['AR','KS','MO','OK','TN','TX'] },
+    { name: 'East West Bank',        states: ['CA','GA','IL','MA','NJ','NY','TX','WA'] },
+    { name: 'Cathay Bank',           states: ['CA','IL','MA','MD','NJ','NY','TX','WA'] },
+    { name: 'Hanmi Bank',            states: ['CA','GA','IL','NJ','NY','TX','VA','WA'] },
+    { name: 'Investors Bank',        states: ['NJ','NY'] },
+    { name: 'Flagstar Bank',         states: ['CA','IN','MI','OH','WI'] },
+    { name: 'Pacific Premier Bank',  states: ['AZ','CA','CO','NV','OR','WA'] },
+    { name: 'Columbia Bank',         states: ['NJ','NY','PA','MD'] },
+    { name: 'Synovus Bank',          states: ['AL','FL','GA','SC','TN'] },
+    { name: 'Renasant Bank',         states: ['AL','FL','GA','MS','TN'] },
+    { name: 'Heartland Financial',   states: ['AZ','CO','IA','ID','IL','MN','MO','MT','ND','NM','NV','WI','WY'] },
+    { name: 'BOK Financial',         states: ['AZ','AR','CO','KS','MO','NM','OK','TX'] },
+    { name: 'First Horizon Bank',    states: ['AL','AR','FL','GA','LA','MS','NC','SC','TN','TX','VA'] },
+    { name: 'Independent Bank',      states: ['MA','MI','TX'] },
+    { name: 'Berkshire Bank',        states: ['CT','MA','NY','VT'] },
+    { name: 'First National Bank',   states: [] },
+  ];
+
+  // Keywords to exclude from FDIC "local" list when they match a major bank
+  const majorBankKeywords = [
+    'JPMORGAN','CHASE BANK','BANK OF AMERICA','WELLS FARGO',
+    'CITIBANK','U.S. BANK','PNC BANK','TRUIST','TD BANK',
+    'CAPITAL ONE','REGIONS BANK','FIFTH THIRD','KEYBANK',
+    'BMO HARRIS','BMO BANK','CITIZENS BANK','HUNTINGTON NATIONAL',
+    'M&T BANK','SANTANDER','AMERICAN EXPRESS','DISCOVER BANK',
+    'ALLY BANK','GOLDMAN SACHS','SYNCHRONY','COMERICA',
+    'FROST BANK','TEXAS CAPITAL','PROSPERITY BANK','GLACIER BANK',
+    'ZIONS BANK','BANNER BANK','WASHINGTON FEDERAL','WINTRUST',
+    'PINNACLE BANK','SIMMONS BANK','EAST WEST BANK','CATHAY BANK',
+    'HANMI BANK','INVESTORS BANK','FLAGSTAR','PACIFIC PREMIER',
+    'COLUMBIA BANK','SYNOVUS','RENASANT','BOK FINANCIAL',
+    'FIRST HORIZON','BERKSHIRE BANK','HEARTLAND FINANCIAL',
+    'INDEPENDENT BANK GROUP'
+  ];
+
+  function isFdicMajor(name) {
+    const upper = name.toUpperCase();
+    return majorBankKeywords.some(k => upper.includes(k));
+  }
+
+  function renderFilteredChips(query) {
+    const container = document.getElementById('personalBankChips');
+    const countEl   = document.getElementById('bankResultsCount');
+    container.innerHTML = '';
+
+    const q = query.toLowerCase().trim();
+    const allFiltered = q
+      ? allBanksForState.filter(b => b.name.toLowerCase().includes(q))
+      : allBanksForState;
+
+    const majorBanks  = allFiltered.filter(b => b.type === 'major').sort((a,b) => a.name.localeCompare(b.name));
+    const otherBanks  = allFiltered.filter(b => b.type === 'bank').sort((a,b) => a.name.localeCompare(b.name));
+    const cus         = allFiltered.filter(b => b.type === 'cu').sort((a,b) => a.name.localeCompare(b.name));
+
+    // limit "other banks" to 60 when no search query (too many to show all)
+    const otherDisplay = q ? otherBanks : otherBanks.slice(0, 60);
+
+    if (q) {
+      const total = majorBanks.length + otherBanks.length + cus.length;
+      countEl.innerHTML = `Showing <span>${total}</span> of ${allBanksForState.length} institutions`;
+    } else {
+      countEl.innerHTML = `<span>${allBanksForState.length}</span> institutions loaded — type to search all`;
+    }
+
+    // ── SECTION 1: Major Banks ──
+    if (majorBanks.length) {
+      const sec = buildSection('major',
+        `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-4 0v2M12 12v4"/></svg>`,
+        'Major Banks', majorBanks.length
+      );
+      majorBanks.forEach(b => sec.chips.appendChild(makeChip(b.name, 'bank')));
+      container.appendChild(sec.el);
+    }
+
+    // ── SECTION 2: Credit Unions ──
+    if (cus.length) {
+      const sec = buildSection('cu',
+        `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>`,
+        'Credit Unions', cus.length
+      );
+      cus.forEach(b => sec.chips.appendChild(makeChip(b.name, 'cu')));
+      container.appendChild(sec.el);
+    }
+
+    // ── SECTION 3: Local & Regional Banks ──
+    if (otherDisplay.length) {
+      const label = q ? 'Other Banks' : `Local & Regional Banks${!q && otherBanks.length > 60 ? ` (showing 60 of ${otherBanks.length} — search to find yours)` : ''}`;
+      const sec = buildSection('other',
+        `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+        label, otherBanks.length
+      );
+      otherDisplay.forEach(b => sec.chips.appendChild(makeChip(b.name, 'bank')));
+      // Add "+" toggle button to header
+      const toggleBtn = document.createElement('button');
+      toggleBtn.type = 'button';
+      toggleBtn.className = 'bank-section-toggle';
+      toggleBtn.innerHTML = '+';
+      toggleBtn.setAttribute('aria-label', 'Expand Local & Regional Banks');
+      toggleBtn.onclick = () => {
+        const isCollapsed = sec.chips.classList.toggle('collapsed');
+        toggleBtn.innerHTML = isCollapsed ? '+' : '−';
+      };
+      sec.el.querySelector('.bank-section-header').appendChild(toggleBtn);
+      // Start collapsed on mobile
+      if (window.innerWidth <= 768) {
+        sec.chips.classList.add('collapsed');
+      }
+      container.appendChild(sec.el);
+    }
+
+    if (!majorBanks.length && !cus.length && !otherDisplay.length) {
+      const empty = document.createElement('div');
+      empty.className = 'bank-empty-hint';
+      empty.textContent = 'No matches — use "+ Other" to add your institution manually.';
+      container.appendChild(empty);
+    }
+
+    // Restore selected state on chips
+    container.querySelectorAll('.bank-chip[data-bank]').forEach(chip => {
+      if (selectedBanks.has(chip.dataset.bank)) chip.classList.add('selected');
+    });
+
+    // + Other chip (standalone)
+    const otherBtn = document.createElement('button');
+    otherBtn.type = 'button';
+    otherBtn.className = 'bank-chip other-chip';
+    otherBtn.textContent = '+ Other';
+    otherBtn.onclick = toggleOtherBank;
+    container.appendChild(otherBtn);
+  }
+
+  function buildSection(type, iconSvg, title, count) {
+    const el = document.createElement('div');
+    el.className = 'bank-section';
+    el.innerHTML = `
+      <div class="bank-section-header ${type}">
+        <div class="bank-section-icon">${iconSvg}</div>
+        <div class="bank-section-title">${title}</div>
+        <div class="bank-section-count">${count}</div>
+      </div>
+      <div class="bank-section-chips"></div>`;
+    return { el, chips: el.querySelector('.bank-section-chips') };
+  }
+
+  function makeChip(name, type) {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'bank-chip' + (type === 'cu' ? ' cu' : '');
+    chip.dataset.bank = name;
+    chip.textContent = name;
+    chip.onclick = () => toggleBank(chip, name);
+    return chip;
+  }
+
+  function filterBankChips(query) { renderFilteredChips(query); }
+
+  // ── LEGACY bankData (kept for initial no-state view) ─
+  const bankData = [
+    // ── NATIONAL BANKS ──
+    { name: 'Chase',              type: 'bank', states: [] },
+    { name: 'Bank of America',    type: 'bank', states: [] },
+    { name: 'Wells Fargo',        type: 'bank', states: [] },
+    { name: 'American Express',   type: 'bank', states: [] },
+    // ── REGIONAL BANKS ──
+    { name: 'Citibank',           type: 'bank', states: ['CA','CT','DC','FL','IL','MD','NJ','NV','NY','TX','VA'] },
+    { name: 'US Bank',            type: 'bank', states: ['AL','AZ','AR','CA','CO','ID','IL','IN','IA','KS','KY','MN','MO','MT','NE','NV','NM','ND','OH','OR','SD','TN','UT','WA','WI','WY'] },
+    { name: 'PNC Bank',           type: 'bank', states: ['AL','DC','DE','FL','GA','IL','IN','KY','MD','MI','MO','NJ','NY','NC','OH','PA','SC','TX','VA','WI','WV'] },
+    { name: 'TD Bank',            type: 'bank', states: ['CT','DC','DE','FL','MA','MD','ME','NC','NH','NJ','NY','PA','RI','SC','VA','VT'] },
+    { name: 'Truist',             type: 'bank', states: ['AL','AR','DC','FL','GA','IN','KY','MD','MS','NC','NJ','OH','PA','SC','TN','TX','VA','WV'] },
+    { name: 'Regions Bank',       type: 'bank', states: ['AL','AR','FL','GA','IL','IN','IA','KY','LA','MS','MO','NC','SC','TN','TX','VA'] },
+    { name: 'Fifth Third Bank',   type: 'bank', states: ['FL','GA','IL','IN','KY','MI','MO','NC','OH','TN','WV'] },
+    { name: 'KeyBank',            type: 'bank', states: ['AK','CO','ID','IN','ME','MI','NY','OH','OR','PA','UT','VT','WA'] },
+    { name: 'BMO Harris',         type: 'bank', states: ['AZ','FL','IL','IN','KS','MN','MO','WI'] },
+    { name: 'Citizens Bank',      type: 'bank', states: ['CT','DC','DE','MA','MD','MI','NH','NJ','NY','OH','PA','RI','VA','VT'] },
+    { name: 'Huntington Bank',    type: 'bank', states: ['CO','IL','IN','KY','MI','MN','OH','PA','SD','WV','WI'] },
+    { name: 'M&T Bank',           type: 'bank', states: ['CT','DC','DE','MD','NJ','NY','PA','VA','WV'] },
+    { name: 'Santander Bank',     type: 'bank', states: ['CT','DC','DE','FL','MA','MD','NH','NJ','NY','PA','RI','VT'] },
+    // ── NATIONAL CREDIT UNIONS ──
+    { name: 'Navy Federal CU',    type: 'cu',   states: [] },
+    { name: 'PenFed CU',          type: 'cu',   states: [] },
+    { name: 'Alliant CU',         type: 'cu',   states: [] },
+    // ── STATE CREDIT UNIONS ──
+    { name: 'Redstone FCU',           type: 'cu', states: ['AL'] },
+    { name: 'Alabama CU',             type: 'cu', states: ['AL'] },
+    { name: 'MAX Credit Union',       type: 'cu', states: ['AL'] },
+    { name: 'APCO CU',                type: 'cu', states: ['AL'] },
+    { name: 'Alaska USA FCU',         type: 'cu', states: ['AK'] },
+    { name: 'Credit Union 1',         type: 'cu', states: ['AK'] },
+    { name: 'Denali FCU',             type: 'cu', states: ['AK'] },
+    { name: 'Desert Financial CU',    type: 'cu', states: ['AZ'] },
+    { name: 'Arizona FCU',            type: 'cu', states: ['AZ'] },
+    { name: 'TruWest CU',             type: 'cu', states: ['AZ'] },
+    { name: 'Vantage West CU',        type: 'cu', states: ['AZ'] },
+    { name: 'Arkansas FCU',           type: 'cu', states: ['AR'] },
+    { name: 'Telcoe FCU',             type: 'cu', states: ['AR'] },
+    { name: 'Golden 1 CU',            type: 'cu', states: ['CA'] },
+    { name: 'SchoolsFirst FCU',       type: 'cu', states: ['CA'] },
+    { name: 'Patelco CU',             type: 'cu', states: ['CA'] },
+    { name: 'First Tech FCU',         type: 'cu', states: ['CA','OR','WA'] },
+    { name: 'Star One CU',            type: 'cu', states: ['CA'] },
+    { name: 'Ent CU',                 type: 'cu', states: ['CO'] },
+    { name: 'Bellco CU',              type: 'cu', states: ['CO'] },
+    { name: 'Canvas CU',              type: 'cu', states: ['CO'] },
+    { name: 'Westerra CU',            type: 'cu', states: ['CO'] },
+    { name: 'Sikorsky Financial CU',  type: 'cu', states: ['CT'] },
+    { name: 'Charter Oak CU',         type: 'cu', states: ['CT'] },
+    { name: 'American Eagle FCU',     type: 'cu', states: ['CT'] },
+    { name: 'Congressional FCU',      type: 'cu', states: ['DC','MD','VA'] },
+    { name: 'DEXSTA FCU',             type: 'cu', states: ['DE'] },
+    { name: 'Delaware Alliance FCU',  type: 'cu', states: ['DE'] },
+    { name: 'Suncoast CU',            type: 'cu', states: ['FL'] },
+    { name: 'Space Coast CU',         type: 'cu', states: ['FL'] },
+    { name: 'Achieva CU',             type: 'cu', states: ['FL'] },
+    { name: 'Brightstar CU',          type: 'cu', states: ['FL'] },
+    { name: 'Delta Community CU',     type: 'cu', states: ['GA'] },
+    { name: "Georgia's Own CU",       type: 'cu', states: ['GA'] },
+    { name: 'LGE Community CU',       type: 'cu', states: ['GA'] },
+    { name: 'Hawaii State FCU',       type: 'cu', states: ['HI'] },
+    { name: 'Aloha Pacific FCU',      type: 'cu', states: ['HI'] },
+    { name: 'HawaiiUSA FCU',          type: 'cu', states: ['HI'] },
+    { name: 'Idaho Central CU',       type: 'cu', states: ['ID'] },
+    { name: 'STCU',                   type: 'cu', states: ['ID','WA'] },
+    { name: 'Icon CU',                type: 'cu', states: ['ID'] },
+    { name: 'Consumers CU',           type: 'cu', states: ['IL'] },
+    { name: 'Baxter CU',              type: 'cu', states: ['IL'] },
+    { name: 'Illinois State CU',      type: 'cu', states: ['IL'] },
+    { name: 'Indiana Members CU',     type: 'cu', states: ['IN'] },
+    { name: 'Elements Financial',     type: 'cu', states: ['IN'] },
+    { name: 'Teachers CU',            type: 'cu', states: ['IN'] },
+    { name: 'GreenState CU',          type: 'cu', states: ['IA'] },
+    { name: 'IHMVCU',                 type: 'cu', states: ['IA','IL'] },
+    { name: 'University of Iowa CU',  type: 'cu', states: ['IA'] },
+    { name: 'Azura CU',               type: 'cu', states: ['KS'] },
+    { name: 'Credit Union of America',type: 'cu', states: ['KS'] },
+    { name: "L&N FCU",                type: 'cu', states: ['KY'] },
+    { name: 'Commonwealth CU',        type: 'cu', states: ['KY'] },
+    { name: 'Pelican State CU',       type: 'cu', states: ['LA'] },
+    { name: 'ASI FCU',                type: 'cu', states: ['LA'] },
+    { name: 'Barksdale FCU',          type: 'cu', states: ['LA'] },
+    { name: 'Infinity FCU',           type: 'cu', states: ['ME'] },
+    { name: 'Midcoast FCU',           type: 'cu', states: ['ME'] },
+    { name: 'MECU',                   type: 'cu', states: ['MD'] },
+    { name: 'Tower FCU',              type: 'cu', states: ['MD'] },
+    { name: 'SECU Maryland',          type: 'cu', states: ['MD'] },
+    { name: 'DCU (Digital FCU)',      type: 'cu', states: ['MA','NH'] },
+    { name: 'Metro CU',               type: 'cu', states: ['MA'] },
+    { name: 'MSUFCU',                 type: 'cu', states: ['MI'] },
+    { name: 'Lake Michigan CU',       type: 'cu', states: ['MI'] },
+    { name: 'Genisys CU',             type: 'cu', states: ['MI'] },
+    { name: 'United FCU',             type: 'cu', states: ['MI','IN','OH'] },
+    { name: 'Wings Financial CU',     type: 'cu', states: ['MN'] },
+    { name: 'Affinity Plus FCU',      type: 'cu', states: ['MN'] },
+    { name: 'Spire CU',               type: 'cu', states: ['MN'] },
+    { name: 'Hiway FCU',              type: 'cu', states: ['MN'] },
+    { name: 'Singing River FCU',      type: 'cu', states: ['MS'] },
+    { name: 'Keesler FCU',            type: 'cu', states: ['MS'] },
+    { name: 'First Community CU',     type: 'cu', states: ['MO'] },
+    { name: 'Show Me CU',             type: 'cu', states: ['MO'] },
+    { name: 'Missoula FCU',           type: 'cu', states: ['MT'] },
+    { name: 'Wheatland FCU',          type: 'cu', states: ['MT'] },
+    { name: 'Centris FCU',            type: 'cu', states: ['NE'] },
+    { name: 'SAC FCU',                type: 'cu', states: ['NE'] },
+    { name: 'Cobalt CU',              type: 'cu', states: ['NE'] },
+    { name: 'Greater Nevada CU',      type: 'cu', states: ['NV'] },
+    { name: 'America First CU',       type: 'cu', states: ['NV','UT','ID','AZ'] },
+    { name: 'Clark County CU',        type: 'cu', states: ['NV'] },
+    { name: "St. Mary's Bank CU",     type: 'cu', states: ['NH'] },
+    { name: 'Members First CU',       type: 'cu', states: ['NH','MI'] },
+    { name: 'Service CU',             type: 'cu', states: ['NH'] },
+    { name: 'Affinity FCU',           type: 'cu', states: ['NJ'] },
+    { name: 'NJ FCU',                 type: 'cu', states: ['NJ'] },
+    { name: 'Nusenda CU',             type: 'cu', states: ['NM'] },
+    { name: 'Sandia Laboratory FCU',  type: 'cu', states: ['NM'] },
+    { name: 'Rio Grande CU',          type: 'cu', states: ['NM'] },
+    { name: 'Bethpage FCU',           type: 'cu', states: ['NY'] },
+    { name: 'NEFCU',                  type: 'cu', states: ['NY'] },
+    { name: 'Municipal CU',           type: 'cu', states: ['NY'] },
+    { name: 'Nassau Educators FCU',   type: 'cu', states: ['NY'] },
+    { name: 'State Employees CU',     type: 'cu', states: ['NC'] },
+    { name: 'Coastal FCU',            type: 'cu', states: ['NC'] },
+    { name: 'Allegacy FCU',           type: 'cu', states: ['NC'] },
+    { name: 'Space Age FCU',          type: 'cu', states: ['ND'] },
+    { name: 'Wright-Patt CU',         type: 'cu', states: ['OH'] },
+    { name: 'Day Air CU',             type: 'cu', states: ['OH'] },
+    { name: 'KEMBA Financial CU',     type: 'cu', states: ['OH'] },
+    { name: 'Superior CU',            type: 'cu', states: ['OH'] },
+    { name: 'Tinker FCU',             type: 'cu', states: ['OK'] },
+    { name: 'WeoSave CU',             type: 'cu', states: ['OK'] },
+    { name: 'Heartland CU',           type: 'cu', states: ['OK'] },
+    { name: 'OnPoint Community CU',   type: 'cu', states: ['OR'] },
+    { name: 'Unitus Community CU',    type: 'cu', states: ['OR'] },
+    { name: 'Oregon Community CU',    type: 'cu', states: ['OR'] },
+    { name: 'PSECU',                  type: 'cu', states: ['PA'] },
+    { name: 'TruMark Financial CU',   type: 'cu', states: ['PA'] },
+    { name: 'Police & Fire FCU',      type: 'cu', states: ['PA'] },
+    { name: 'Navigant CU',            type: 'cu', states: ['RI'] },
+    { name: 'Pawtucket CU',           type: 'cu', states: ['RI'] },
+    { name: 'Sharonview FCU',         type: 'cu', states: ['SC'] },
+    { name: 'Founders FCU',           type: 'cu', states: ['SC'] },
+    { name: 'Black Hills FCU',        type: 'cu', states: ['SD'] },
+    { name: 'Dakotaland FCU',         type: 'cu', states: ['SD','ND'] },
+    { name: 'Tennessee Valley FCU',   type: 'cu', states: ['TN'] },
+    { name: 'ORNL FCU',               type: 'cu', states: ['TN'] },
+    { name: 'RBFCU',                  type: 'cu', states: ['TX'] },
+    { name: 'EECU',                   type: 'cu', states: ['TX'] },
+    { name: 'Amplify CU',             type: 'cu', states: ['TX'] },
+    { name: 'University FCU',         type: 'cu', states: ['TX'] },
+    { name: 'Texas Dow Employees CU', type: 'cu', states: ['TX'] },
+    { name: 'Mountain America CU',    type: 'cu', states: ['UT','ID','NV','AZ','NM'] },
+    { name: 'Utah Community CU',      type: 'cu', states: ['UT'] },
+    { name: 'VSECU',                  type: 'cu', states: ['VT'] },
+    { name: 'Green Mountain CU',      type: 'cu', states: ['VT'] },
+    { name: 'Apple FCU',              type: 'cu', states: ['VA'] },
+    { name: 'Virginia CU',            type: 'cu', states: ['VA'] },
+    { name: 'Langley FCU',            type: 'cu', states: ['VA'] },
+    { name: 'BECU',                   type: 'cu', states: ['WA'] },
+    { name: 'WSECU',                  type: 'cu', states: ['WA'] },
+    { name: 'Spokane Teachers CU',    type: 'cu', states: ['WA'] },
+    { name: 'Sound CU',               type: 'cu', states: ['WA'] },
+    { name: 'WV United FCU',          type: 'cu', states: ['WV'] },
+    { name: 'Landmark CU',            type: 'cu', states: ['WI'] },
+    { name: 'Educators CU',           type: 'cu', states: ['WI'] },
+    { name: 'Summit CU',              type: 'cu', states: ['WI'] },
+    { name: 'Verve CU',               type: 'cu', states: ['WI'] },
+    { name: 'WyHy FCU',               type: 'cu', states: ['WY'] },
+    { name: 'Meridian Trust FCU',     type: 'cu', states: ['WY'] },
+  ];
+
+  // ── BANK PICKER ──────────────────────────────────────
+  const selectedBanks = new Set();
+
+  function selectBankFromDropdown(sel) {
+    const name = sel.value;
+    if (!name) return;
+    selectedBanks.add(name);
+    sel.value = '';
+    renderBankTags();
+  }
+
+  function selectBizBankFromDropdown(sel) {
+    const name = sel.value;
+    if (!name) return;
+    selectedBizBanks.add(name);
+    sel.value = '';
+    renderBizBankTags();
+  }
+
+  function toggleBank(chip, bankName) {
+    if (selectedBanks.has(bankName)) {
+      selectedBanks.delete(bankName);
+      chip.classList.remove('selected');
+    } else {
+      selectedBanks.add(bankName);
+      chip.classList.add('selected');
+    }
+    renderBankTags();
+  }
+
+  function toggleOtherBank() {
+    const row = document.getElementById('bankOtherRow');
+    row.classList.toggle('visible');
+    if (row.classList.contains('visible')) {
+      document.getElementById('bankOtherInput').focus();
+    }
+  }
+
+  function addOtherBank() {
+    const input = document.getElementById('bankOtherInput');
+    const val = input.value.trim();
+    if (!val) return;
+    selectedBanks.add(val);
+    input.value = '';
+    document.getElementById('bankOtherRow').classList.remove('visible');
+    renderBankTags();
+  }
+
+  // ── BUSINESS BANK PICKER ─────────────────────────────
+  let allBizBanksForState = [];
+  const selectedBizBanks = new Set();
+
+  async function loadBizBanksForState(state) {
+    if (!state) return;
+    const hint     = document.getElementById('bizBankStateHint');
+    const loading  = document.getElementById('bizBankLoadingIndicator');
+    const search   = document.getElementById('bizBankSearchWrap');
+    const container = document.getElementById('bizBankChips');
+    const count    = document.getElementById('bizBankResultsCount');
+
+    hint.style.display    = 'none';
+    search.style.display  = 'none';
+    loading.style.display = 'flex';
+    container.innerHTML   = '';
+    count.innerHTML       = '';
+    document.getElementById('bizBankSearchInput').value = '';
+    allBizBanksForState = [];
+
+    const [fdicBanks, ncuaCUs] = await Promise.allSettled([
+      fetchFDICBanks(state),
+      fetchNCUACUs(state)
+    ]);
+
+    const fdicRaw = fdicBanks.status === 'fulfilled' ? fdicBanks.value : [];
+    const cuRaw   = ncuaCUs.status  === 'fulfilled' ? ncuaCUs.value  : (fallbackCUs[state] || []);
+
+    const majors = majorBankList
+      .filter(b => b.states.length === 0 || b.states.includes(state))
+      .map(b => ({ name: b.name, type: 'major' }));
+
+    const localBanks = fdicRaw
+      .filter(n => !isFdicMajor(n))
+      .map(n => ({ name: n, type: 'bank' }));
+
+    const cus = cuRaw.map(n => ({ name: typeof n === 'string' ? n : n.name, type: 'cu' }));
+
+    allBizBanksForState = [...majors, ...localBanks, ...cus];
+
+    loading.style.display = 'none';
+    search.style.display  = 'flex';
+    renderFilteredBizChips('');
+  }
+
+  function renderFilteredBizChips(query) {
+    const container = document.getElementById('bizBankChips');
+    const countEl   = document.getElementById('bizBankResultsCount');
+    container.innerHTML = '';
+
+    const q = query.toLowerCase().trim();
+    const allFiltered = q
+      ? allBizBanksForState.filter(b => b.name.toLowerCase().includes(q))
+      : allBizBanksForState;
+
+    const majorBanks = allFiltered.filter(b => b.type === 'major').sort((a,b) => a.name.localeCompare(b.name));
+    const otherBanks = allFiltered.filter(b => b.type === 'bank').sort((a,b) => a.name.localeCompare(b.name));
+    const cus        = allFiltered.filter(b => b.type === 'cu').sort((a,b) => a.name.localeCompare(b.name));
+    const otherDisplay = q ? otherBanks : otherBanks.slice(0, 60);
+
+    if (q) {
+      const total = majorBanks.length + otherBanks.length + cus.length;
+      countEl.innerHTML = `Showing <span>${total}</span> of ${allBizBanksForState.length} institutions`;
+    } else {
+      countEl.innerHTML = `<span>${allBizBanksForState.length}</span> institutions loaded — type to search all`;
+    }
+
+    if (majorBanks.length) {
+      const sec = buildSection('major',
+        `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-4 0v2M12 12v4"/></svg>`,
+        'Major Banks', majorBanks.length);
+      majorBanks.forEach(b => sec.chips.appendChild(makeBizChip(b.name, 'bank')));
+      container.appendChild(sec.el);
+    }
+    if (cus.length) {
+      const sec = buildSection('cu',
+        `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>`,
+        'Credit Unions', cus.length);
+      cus.forEach(b => sec.chips.appendChild(makeBizChip(b.name, 'cu')));
+      container.appendChild(sec.el);
+    }
+    if (otherDisplay.length) {
+      const label = q ? 'Other Banks' : `Local & Regional Banks${!q && otherBanks.length > 60 ? ` (showing 60 of ${otherBanks.length} — search to find yours)` : ''}`;
+      const sec = buildSection('other',
+        `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+        label, otherBanks.length);
+      otherDisplay.forEach(b => sec.chips.appendChild(makeBizChip(b.name, 'bank')));
+      // Add "+" toggle button to header
+      const toggleBtnBiz = document.createElement('button');
+      toggleBtnBiz.type = 'button';
+      toggleBtnBiz.className = 'bank-section-toggle';
+      toggleBtnBiz.innerHTML = '+';
+      toggleBtnBiz.setAttribute('aria-label', 'Expand Local & Regional Banks');
+      toggleBtnBiz.onclick = () => {
+        const isCollapsed = sec.chips.classList.toggle('collapsed');
+        toggleBtnBiz.innerHTML = isCollapsed ? '+' : '−';
+      };
+      sec.el.querySelector('.bank-section-header').appendChild(toggleBtnBiz);
+      // Start collapsed on mobile
+      if (window.innerWidth <= 768) {
+        sec.chips.classList.add('collapsed');
+      }
+      container.appendChild(sec.el);
+    }
+
+    if (!majorBanks.length && !cus.length && !otherDisplay.length) {
+      const empty = document.createElement('div');
+      empty.className = 'bank-empty-hint';
+      empty.textContent = 'No matches — use "+ Other" to add your institution manually.';
+      container.appendChild(empty);
+    }
+
+    container.querySelectorAll('.bank-chip[data-bank]').forEach(chip => {
+      if (selectedBizBanks.has(chip.dataset.bank)) chip.classList.add('selected');
+    });
+
+    const otherBtn = document.createElement('button');
+    otherBtn.type = 'button';
+    otherBtn.className = 'bank-chip other-chip';
+    otherBtn.textContent = '+ Other';
+    otherBtn.onclick = toggleOtherBizBank;
+    container.appendChild(otherBtn);
+  }
+
+  function makeBizChip(name, type) {
+    const chip = document.createElement('button');
+    chip.type = 'button';
+    chip.className = 'bank-chip' + (type === 'cu' ? ' cu' : '');
+    chip.dataset.bank = name;
+    chip.textContent = name;
+    chip.onclick = () => toggleBizBank(chip, name);
+    return chip;
+  }
+
+  function toggleBizBank(chip, bankName) {
+    if (selectedBizBanks.has(bankName)) {
+      selectedBizBanks.delete(bankName);
+      chip.classList.remove('selected');
+    } else {
+      selectedBizBanks.add(bankName);
+      chip.classList.add('selected');
+    }
+    renderBizBankTags();
+  }
+
+  function toggleOtherBizBank() {
+    const row = document.getElementById('bizBankOtherRow');
+    row.classList.toggle('visible');
+    if (row.classList.contains('visible')) document.getElementById('bizBankOtherInput').focus();
+  }
+
+  function addOtherBizBank() {
+    const input = document.getElementById('bizBankOtherInput');
+    const val = input.value.trim();
+    if (!val) return;
+    selectedBizBanks.add(val);
+    input.value = '';
+    document.getElementById('bizBankOtherRow').classList.remove('visible');
+    renderBizBankTags();
+  }
+
+  function renderBizBankTags() {
+    const list   = document.getElementById('bizBankSelected');
+    const hidden = document.getElementById('b_bankingRelationships');
+    list.innerHTML = '';
+
+    if (selectedBizBanks.size === 0) {
+      const hint = document.createElement('span');
+      hint.className = 'bank-empty-hint';
+      hint.textContent = 'No banks selected yet';
+      list.appendChild(hint);
+      hidden.value = '';
+      return;
+    }
+
+    selectedBizBanks.forEach(bank => {
+      const tag = document.createElement('div');
+      tag.className = 'bank-tag';
+      tag.innerHTML = `${bank}<button type="button" onclick="removeBizBank('${bank.replace(/'/g,"\\'")}')">×</button>`;
+      list.appendChild(tag);
+    });
+    hidden.value = [...selectedBizBanks].join(', ');
+  }
+
+  function removeBizBank(bankName) {
+    selectedBizBanks.delete(bankName);
+    document.querySelectorAll('#bizBankChips .bank-chip[data-bank]').forEach(chip => {
+      if (chip.dataset.bank === bankName) chip.classList.remove('selected');
+    });
+    renderBizBankTags();
+  }
+
+  function filterBizBankChips(query) { renderFilteredBizChips(query); }
+
+  // Allow Enter key in other input + wire state listener
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('bankOtherInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); addOtherBank(); }
+    });
+    document.getElementById('bizBankOtherInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); addOtherBizBank(); }
+    });
+    // Personal state
+    const stateEl = document.getElementById('p_state');
+    if (stateEl.value) loadBanksForState(stateEl.value);
+    stateEl.addEventListener('change', function() {
+      if (this.value) loadBanksForState(this.value);
+      else {
+        document.getElementById('bankStateHint').style.display = 'flex';
+        document.getElementById('bankSearchWrap').style.display = 'none';
+        document.getElementById('personalBankChips').innerHTML = '';
+        document.getElementById('bankResultsCount').innerHTML = '';
+      }
+    });
+    // Business state
+    const bizStateEl = document.getElementById('b_state');
+    if (bizStateEl.value) loadBizBanksForState(bizStateEl.value);
+    bizStateEl.addEventListener('change', function() {
+      if (this.value) loadBizBanksForState(this.value);
+      else {
+        document.getElementById('bizBankStateHint').style.display = 'flex';
+        document.getElementById('bizBankSearchWrap').style.display = 'none';
+        document.getElementById('bizBankChips').innerHTML = '';
+        document.getElementById('bizBankResultsCount').innerHTML = '';
+      }
+    });
+  });
+
+  function renderBankTags() {
+    const list = document.getElementById('personalBankSelected');
+    const hint = document.getElementById('bankEmptyHint');
+    const hidden = document.getElementById('p_banks');
+
+    list.innerHTML = '';
+    if (selectedBanks.size === 0) {
+      list.appendChild(document.createElement('span')).className = 'bank-empty-hint';
+      list.querySelector('span').textContent = 'No banks selected yet';
+      hidden.value = '';
+      return;
+    }
+
+    selectedBanks.forEach(bank => {
+      const tag = document.createElement('div');
+      tag.className = 'bank-tag';
+      tag.innerHTML = `${bank}<button type="button" onclick="removeBank('${bank.replace(/'/g,"\\'")}', this)" title="Remove">&times;</button>`;
+      list.appendChild(tag);
+    });
+
+    hidden.value = [...selectedBanks].join(', ');
+  }
+
+  function removeBank(bankName, btn) {
+    selectedBanks.delete(bankName);
+    // un-select chip if it's a preset bank
+    document.querySelectorAll('#personalBankChips .bank-chip').forEach(chip => {
+      if (chip.textContent.trim() === bankName) chip.classList.remove('selected');
+    });
+    renderBankTags();
+  }
+
+  // ── CREDIT CARD PICKER ───────────────────────────────
+  const selectedCCs = new Set();
+
+  function toggleCC(chip, cardName) {
+    if (selectedCCs.has(cardName)) {
+      selectedCCs.delete(cardName);
+      chip.classList.remove('selected');
+    } else {
+      selectedCCs.add(cardName);
+      chip.classList.add('selected');
+    }
+    const noneCheck = document.getElementById('ccNoneCheck');
+    if (noneCheck) noneCheck.checked = false;
+    renderCCTags();
+  }
+
+  function toggleOtherCC() {
+    const row = document.getElementById('ccOtherRow');
+    if (!row) return;
+    row.style.display = row.style.display === 'flex' ? 'none' : 'flex';
+    if (row.style.display === 'flex') {
+      const inp = document.getElementById('ccOtherInput');
+      if (inp) { inp.value = ''; inp.focus(); }
+    }
+  }
+
+  function addOtherCC() {
+    const inp = document.getElementById('ccOtherInput');
+    if (!inp) return;
+    const val = inp.value.trim();
+    if (!val) return;
+    selectedCCs.add(val);
+    const noneCheck = document.getElementById('ccNoneCheck');
+    if (noneCheck) noneCheck.checked = false;
+    renderCCTags();
+    inp.value = '';
+    const row = document.getElementById('ccOtherRow');
+    if (row) row.style.display = 'none';
+  }
+
+  function toggleCCNone(checkbox) {
+    if (checkbox.checked) {
+      selectedCCs.clear();
+      document.querySelectorAll('#ccChips .bank-chip').forEach(chip => chip.classList.remove('selected'));
+      document.getElementById('b_creditCards').value = 'None';
+      const list = document.getElementById('ccSelected');
+      list.innerHTML = '';
+      const hint = document.createElement('span');
+      hint.className = 'bank-empty-hint';
+      hint.textContent = 'No business credit cards';
+      list.appendChild(hint);
+    } else {
+      document.getElementById('b_creditCards').value = '';
+      renderCCTags();
+    }
+  }
+
+  function renderCCTags() {
+    const list = document.getElementById('ccSelected');
+    const hidden = document.getElementById('b_creditCards');
+    list.innerHTML = '';
+
+    if (selectedCCs.size === 0) {
+      const hint = document.createElement('span');
+      hint.className = 'bank-empty-hint';
+      hint.textContent = 'No cards selected — select above or tick the checkbox if you have none';
+      list.appendChild(hint);
+      hidden.value = '';
+      return;
+    }
+
+    selectedCCs.forEach(card => {
+      const tag = document.createElement('div');
+      tag.className = 'bank-tag';
+      const safeCard = card.replace(/'/g, "\\'");
+      tag.innerHTML = `${card}<button type="button" onclick="removeCC('${safeCard}')" title="Remove">&times;</button>`;
+      list.appendChild(tag);
+    });
+
+    hidden.value = [...selectedCCs].join(', ');
+  }
+
+  function removeCC(cardName) {
+    selectedCCs.delete(cardName);
+    document.querySelectorAll('#ccChips .bank-chip').forEach(chip => {
+      const oc = chip.getAttribute('onclick') || '';
+      if (oc.includes(cardName)) chip.classList.remove('selected');
+    });
+    renderCCTags();
+  }
+
+  // ── VALIDATION HELPERS ───────────────────────────────
+  function validateField(el) {
+    const val = el.value.trim();
+    if (!val) {
+      el.classList.add('field-error');
+      return false;
+    }
+    el.classList.remove('field-error');
+    return true;
+  }
+
+  function clearErrors(ids) {
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('field-error');
+    });
+  }
+
+  // ── PERSONAL FORM SUBMIT ─────────────────────────────
+  function submitPersonal() {
+    const fields = [
+      'p_firstName','p_lastName','p_email','p_phone',
+      'p_dob','p_ssn','p_street','p_city','p_state','p_zip',
+      'p_maiden','p_income','p_citizen','p_creditAccounts'
+    ];
+    let valid = true;
+    fields.forEach(id => {
+      if (!validateField(document.getElementById(id))) valid = false;
+    });
+
+    // Bank picker validation
+    const banksHidden = document.getElementById('p_banks');
+    const bankChipsWrap = document.getElementById('personalBankSelected');
+    if (!banksHidden.value) {
+      bankChipsWrap.style.outline = '2px solid var(--danger)';
+      bankChipsWrap.style.borderRadius = '8px';
+      bankChipsWrap.style.padding = '6px';
+      valid = false;
+    } else {
+      bankChipsWrap.style.outline = '';
+      bankChipsWrap.style.padding = '';
+    }
+
+    const banner = document.getElementById('personalErrorBanner');
+    if (!valid) {
+      banner.classList.add('visible');
+      // scroll to first error
+      const firstErr = document.querySelector('#screen-personal .field-error');
+      if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    banner.classList.remove('visible');
+    goTo('business');
+  }
+
+  // ── BUSINESS FORM SUBMIT ─────────────────────────────
+  function submitBusiness() {
+    const fields = [
+      'b_bizName','b_ein','b_dateEstablished','b_bizType','b_industry',
+      'b_employees','b_monthlySales','b_ownership','b_phone',
+      'b_loanAmount','b_loanReason',
+      'b_street','b_city','b_state','b_zip',
+      'b_bankingRelationships','b_creditCards',
+      'b_secQ','b_secA','b_pin','b_pinConfirm'
+    ];
+    let valid = true;
+    fields.forEach(id => {
+      if (!validateField(document.getElementById(id))) valid = false;
+    });
+
+    // PIN match check
+    const pin = document.getElementById('b_pin').value;
+    const pinConfirm = document.getElementById('b_pinConfirm').value;
+    if (pin && pinConfirm && pin !== pinConfirm) {
+      document.getElementById('b_pinConfirm').classList.add('field-error');
+      valid = false;
+      // show a hint if not already there
+      const pinGroup = document.getElementById('b_pinConfirm').closest('.form-group');
+      if (!pinGroup.querySelector('.pin-mismatch')) {
+        const err = document.createElement('span');
+        err.className = 'error-msg pin-mismatch';
+        err.textContent = 'PINs do not match';
+        pinGroup.appendChild(err);
+      }
+    } else {
+      const pinGroup = document.getElementById('b_pinConfirm').closest('.form-group');
+      const msg = pinGroup.querySelector('.pin-mismatch');
+      if (msg) msg.remove();
+    }
+
+    const banner = document.getElementById('businessErrorBanner');
+    if (!valid) {
+      banner.classList.add('visible');
+      const firstErr = document.querySelector('#screen-business .field-error');
+      if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    banner.classList.remove('visible');
+    goTo('done');
+  }
+</script>
+
+</body>
+</html>

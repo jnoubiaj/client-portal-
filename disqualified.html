@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account Status — CapitalQuest Client Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:      #0A1628;
+      --navy-mid:  #112240;
+      --blue:      #22A7F0;
+      --blue-light:#e8f5fd;
+      --white:     #ffffff;
+      --bg:        #F4F7FA;
+      --gray-50:   #F8FAFC;
+      --gray-100:  #EDF1F7;
+      --gray-200:  #D4DCE8;
+      --gray-400:  #8A97B0;
+      --gray-500:  #627090;
+      --gray-600:  #4A5568;
+      --gray-800:  #1A2340;
+      --danger:    #ef4444;
+      --danger-bg: #fef2f2;
+      --warning:   #f59e0b;
+      --success:   #10b981;
+      --font-head: 'Plus Jakarta Sans', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+    html, body {
+      min-height: 100%;
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--gray-800);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ─────────────────────────────────────────── */
+    .header {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-100);
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 32px;
+    }
+    .header img { height: 34px; }
+
+    /* ── PAGE LAYOUT ─────────────────────────────────────── */
+    .page-wrap {
+      max-width: 720px;
+      margin: 56px auto;
+      padding: 0 24px 80px;
+    }
+
+    /* ── STATUS BADGE ─────────────────────────────────────── */
+    .status-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--danger-bg);
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: 999px;
+      padding: 8px 20px;
+      width: fit-content;
+      margin: 0 auto 28px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--danger);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── MAIN CARD ────────────────────────────────────────── */
+    .main-card {
+      background: var(--white);
+      border-radius: 20px;
+      border: 1px solid var(--gray-100);
+      box-shadow: 0 4px 24px rgba(10,22,40,0.07);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .card-top {
+      padding: 40px 48px 36px;
+      border-bottom: 1px solid var(--gray-100);
+      text-align: center;
+    }
+    .disq-icon {
+      width: 72px; height: 72px;
+      background: var(--danger-bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      border: 4px solid rgba(239,68,68,0.1);
+    }
+    .card-top h1 {
+      font-family: var(--font-head);
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+    .card-top .salutation {
+      font-size: 15px;
+      color: var(--gray-500);
+      line-height: 1.7;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .card-body { padding: 36px 48px; }
+
+    /* ── REASON BOX ───────────────────────────────────────── */
+    .reason-box {
+      background: var(--danger-bg);
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+    .reason-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--danger);
+      margin-bottom: 8px;
+    }
+    .reason-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 1.5;
+    }
+
+    /* ── NEXT STEPS ───────────────────────────────────────── */
+    .section-heading {
+      font-family: var(--font-head);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 16px;
+    }
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px 20px;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-100);
+      border-radius: 12px;
+    }
+    .step-num {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--blue-light);
+      border: 2px solid rgba(34,167,240,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--blue);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .step-content h4 {
+      font-family: var(--font-head);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+    .step-content p {
+      font-size: 13px;
+      color: var(--gray-500);
+      line-height: 1.55;
+    }
+
+    /* ── CLOSING MESSAGE ──────────────────────────────────── */
+    .closing-box {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+      border-radius: 14px;
+      padding: 28px 32px;
+      color: var(--white);
+      margin-bottom: 28px;
+    }
+    .closing-box p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 20px;
+    }
+    .closing-box .closing-sig {
+      font-family: var(--font-head);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .closing-box .closing-sig span {
+      display: block;
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.5);
+      margin-top: 2px;
+    }
+
+    /* ── CONTACT CTA ──────────────────────────────────────── */
+    .contact-card {
+      background: var(--white);
+      border-radius: 16px;
+      border: 1px solid var(--gray-100);
+      box-shadow: 0 2px 12px rgba(10,22,40,0.05);
+      padding: 28px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .contact-info h3 {
+      font-family: var(--font-head);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+    .contact-info p {
+      font-size: 13px;
+      color: var(--gray-400);
+    }
+    .btn-contact {
+      height: 44px;
+      padding: 0 24px;
+      background: var(--blue);
+      border: none;
+      border-radius: 10px;
+      font-family: var(--font-head);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--white);
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(34,167,240,0.3);
+      transition: background 0.15s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+    .btn-contact:hover { background: var(--blue-dark); }
+    .btn-logout-sm {
+      display: block;
+      margin: 24px auto 0;
+      background: none;
+      border: none;
+      font-size: 13px;
+      color: var(--gray-400);
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .btn-logout-sm:hover { color: var(--gray-600); }
+
+    @media (max-width: 600px) {
+      .card-top, .card-body { padding: 28px 24px; }
+      .contact-card { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <img src="Brand_assets/CapitalQuest%20Consulting-R-02.png" alt="CapitalQuest Consulting" />
+</header>
+
+<div class="page-wrap">
+
+  <div class="status-badge">
+    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+    Application Not Approved
+  </div>
+
+  <div class="main-card">
+    <div class="card-top">
+      <div class="disq-icon">
+        <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="#ef4444" stroke-width="2"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <h1>We're Sorry, James</h1>
+      <p class="salutation">Thank you for taking the time to apply with us. We truly appreciate the opportunity to assist you in your journey toward securing funding for your business. After carefully reviewing your application and credit profile, we are unable to move forward at this time.</p>
+    </div>
+
+    <div class="card-body">
+
+      <!-- Reason -->
+      <div class="reason-box">
+        <div class="reason-label">Reason for Disqualification</div>
+        <div class="reason-text">Credit score below minimum threshold — current average of 582 does not meet the 640+ requirement for our funding programs. Additionally, 7 active hard inquiries in the past 12 months exceed our maximum of 4.</div>
+      </div>
+
+      <!-- Next Steps -->
+      <div class="section-heading">What You Can Do Next</div>
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Dispute & Remove Negative Items</h4>
+            <p>File disputes on any inaccurate or outdated items on your credit report. Removing one or two negative items can increase your score by 20–40 points within 30–45 days.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Reduce Credit Card Utilization Below 30%</h4>
+            <p>Pay down balances on existing credit cards so that each card is used at 30% or less of its limit. This can raise your score significantly within one billing cycle.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Avoid New Credit Inquiries for 90 Days</h4>
+            <p>Stop applying for new credit cards or loans. Each hard inquiry can lower your score by 5–10 points and stays on your report for 2 years.</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Reapply in 60–90 Days</h4>
+            <p>Once your score reaches 640+ and inquiries are below 4, reach out to our team. We'll re-evaluate your profile and get you started on the funding process.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Closing -->
+      <div class="closing-box">
+        <p>We understand that this may be disappointing, but we want you to know that this is not the end of your journey. Our goal is to help you position yourself for success. We appreciate your trust in us and look forward to working with you in the future.</p>
+        <div class="closing-sig">
+          CapitalQuest Funding Team
+          <span>Sam &amp; Ali</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Contact CTA -->
+  <div class="contact-card">
+    <div class="contact-info">
+      <h3>Have Questions?</h3>
+      <p>Reach out to our team — we're happy to walk you through a plan to get you back on track.</p>
+    </div>
+    <a href="mailto:support@capitalquestfunding.com" class="btn-contact">Contact Our Team</a>
+  </div>
+
+  <button class="btn-logout-sm" onclick="window.location.href='login.html'">Sign out of portal</button>
+
+</div>
+
+</body>
+</html>
